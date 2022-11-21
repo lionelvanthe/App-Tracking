@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">App Tracking</string>
+    <string name="home_title">Home</string>
+    <string name="usage_limits">Usage limits</string>
+    <string name="more">MORE</string>
+    <string name="total_usage">Total Usage:</string>
+    <string name="usage_time">Usage Time</string>
+    <string name="filter">FILTER</string>
+    <string name="usage_time_percent">%1$s %%</string>
+    <string name="usage_time_minus">%1$s m</string>
+    <string name="usage_time_second">%1$s s</string>
+
+    <string name="name_a_to_z">Name (A to Z)</string>
+    <string name="name_z_to_a">Name (Z to A)</string>
+    <string name="usage_time_largest">Usage time largest</string>
+    <string name="usage_time_smallest">Usage time smallest</string>
+    <string name="permission_please">Permission... Please</string>
+    <string name="the_usage_permission_provides_access_to_your_app_usage_stats_app_tracking_will_not_work_without_this_permission">The usage permission provides access to your app usage stats. App Tracking will not work without this permission!</string>
+    <string name="grant_permission">GRANT PERMISSION</string>
+</resources>

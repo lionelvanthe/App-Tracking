@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/color_bg_root">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/allow_permission_example"
+            android:layout_marginTop="@dimen/normal_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/permission_please"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="23sp"
+            android:layout_marginTop="@dimen/normal_margin"
+            app:layout_constraintEnd_toEndOf="@id/img1"
+            app:layout_constraintStart_toStartOf="@id/img1"
+            app:layout_constraintTop_toBottomOf="@+id/img1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintWidth_percent="0.88"
+            android:text="@string/the_usage_permission_provides_access_to_your_app_usage_stats_app_tracking_will_not_work_without_this_permission"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginTop="@dimen/normal_margin"
+            app:layout_constraintEnd_toEndOf="@id/img1"
+            app:layout_constraintStart_toStartOf="@id/img1"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_grant_permission"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/grant_permission"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:paddingVertical="8sp"
+            android:background="@color/color_text_high_light"
+            android:layout_marginTop="25sp"
+            android:layout_marginBottom="20sp"
+            app:layout_constraintWidth_percent="0.45"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatTextView2"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
