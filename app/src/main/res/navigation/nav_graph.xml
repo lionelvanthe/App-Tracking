@@ -5,9 +5,17 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.apptracking.ui.fragment.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_navigation_home_to_moreFragment"
+            app:destination="@id/moreFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_usage_limits"
         android:name="com.example.apptracking.ui.fragment.usagelimits.UsageLimitsFragment"
         android:label="UsageLimitsFragment" />
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="com.example.apptracking.ui.fragment.more.MoreFragment"
+        android:label="MoreFragment" />
 </navigation>

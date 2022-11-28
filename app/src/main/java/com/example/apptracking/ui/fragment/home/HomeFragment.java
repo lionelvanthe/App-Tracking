@@ -11,6 +11,9 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+
 import com.example.apptracking.R;
 import com.example.apptracking.data.model.App;
 import com.example.apptracking.databinding.DialogUsageAccessPermissionBinding;
@@ -72,7 +75,13 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
 
     @Override
     protected void setupLister() {
-
+        binding.layoutLinaerMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavDirections action =HomeFragmentDirections.actionNavigationHomeToMoreFragment();
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
     }
 
     @Override
