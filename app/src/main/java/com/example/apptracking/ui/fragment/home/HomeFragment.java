@@ -10,6 +10,7 @@ import android.os.Process;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -59,7 +60,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
             accessPermissionDialog.show(requireActivity().getSupportFragmentManager(), "usage_access_permission");
         }
     }
-    
+
     @Override
     public void onResume() {
         super.onResume();
@@ -78,7 +79,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
         binding.layoutLinaerMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavDirections action =HomeFragmentDirections.actionNavigationHomeToMoreFragment();
+                NavDirections action = HomeFragmentDirections.actionNavigationHomeToMoreFragment();
                 Navigation.findNavController(view).navigate(action);
             }
         });
@@ -106,7 +107,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
         viewModel.listUsageTimePerHourOfDevice.observe(this, new Observer<List<Float>>() {
             @Override
             public void onChanged(List<Float> floats) {
-                binding.barView.setDataList(floats,60);
+                binding.barView.setDataList(floats, 60);
             }
         });
 
@@ -140,7 +141,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
             long timeNow = System.currentTimeMillis();
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(timeNow);
-            cal.set(Calendar.DAY_OF_MONTH, 18);
+            cal.set(Calendar.DAY_OF_MONTH, 28);
             cal.set(Calendar.HOUR_OF_DAY, 0);
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
@@ -148,7 +149,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
 
             Calendar cal2 = Calendar.getInstance();
             cal2.setTimeInMillis(timeNow);
-            cal2.set(Calendar.DAY_OF_MONTH, 18);
+            cal2.set(Calendar.DAY_OF_MONTH, 28);
             cal2.set(Calendar.HOUR_OF_DAY, 23);
             cal2.set(Calendar.MINUTE, 59);
             cal2.set(Calendar.SECOND, 59);

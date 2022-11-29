@@ -3,13 +3,6 @@ package com.example.apptracking.data.local;
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.util.Log;
-import android.widget.ProgressBar;
-
-import androidx.palette.graphics.Palette;
-
 import com.example.apptracking.data.model.App;
 import com.example.apptracking.utils.Const;
 import com.example.apptracking.utils.Utils;

@@ -8,14 +8,18 @@
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_navigation_home_to_moreFragment"
-            app:destination="@id/moreFragment" />
+            app:destination="@id/navigation_more" />
     </fragment>
     <fragment
         android:id="@+id/navigation_usage_limits"
         android:name="com.example.apptracking.ui.fragment.usagelimits.UsageLimitsFragment"
         android:label="UsageLimitsFragment" />
     <fragment
-        android:id="@+id/moreFragment"
+        android:id="@+id/navigation_more"
         android:name="com.example.apptracking.ui.fragment.more.MoreFragment"
-        android:label="MoreFragment" />
+        android:label="MoreFragment" >
+        <action
+            android:id="@+id/action_navigation_more_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 </navigation>
