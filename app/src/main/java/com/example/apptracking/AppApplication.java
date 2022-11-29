@@ -1,10 +1,12 @@
 package com.example.apptracking;
 
+import android.app.Application;
+
 import com.example.apptracking.utils.Const;
 import com.orhanobut.hawk.Hawk;
 
 public class AppApplication extends android.app.Application {
-    private static AppApplication instance;
+    private static volatile AppApplication instance;
 
     @Override
     public void onCreate() {

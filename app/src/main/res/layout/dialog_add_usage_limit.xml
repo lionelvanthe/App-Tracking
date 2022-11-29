@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_bg_root">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_a_usage_limit"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/normal_margin"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_bg_spinner_application"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_layout_spinner"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginHorizontal="@dimen/normal_margin"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_application"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/application"
+            android:textColor="@color/color_text_gray"
+            android:background="@color/color_bg_root"
+            android:translationZ="1dp"
+            android:paddingHorizontal="@dimen/small_margin"
+            app:layout_constraintStart_toStartOf="@id/img_bg_spinner_application"
+            app:layout_constraintTop_toTopOf="@id/img_bg_spinner_application"
+            app:layout_constraintBottom_toTopOf="@id/img_bg_spinner_application"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="@dimen/large_margin"
+            android:layout_height="@dimen/large_margin"
+            app:cardCornerRadius="13dp"
+            android:layout_marginStart="@dimen/small_margin"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="@id/img_bg_spinner_application"
+            app:layout_constraintTop_toTopOf="@id/img_bg_spinner_application"
+            app:layout_constraintBottom_toBottomOf="@id/img_bg_spinner_application">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_icon_app"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_launcher_foreground"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_app_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/total_usage_in_limit"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_marginStart="@dimen/small_margin"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintStart_toEndOf="@id/card_view"
+            app:layout_constraintTop_toTopOf="@id/card_view"
+            app:layout_constraintBottom_toBottomOf="@id/card_view"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:layout_constraintEnd_toStartOf="@id/ic_expand_app"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ic_expand_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_expand_more"
+            android:layout_marginEnd="@dimen/big_margin"
+            app:layout_constraintTop_toTopOf="@id/img_bg_spinner_application"
+            app:layout_constraintBottom_toBottomOf="@id/img_bg_spinner_application"
+            app:layout_constraintEnd_toEndOf="@id/img_bg_spinner_application"/>
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_bg_spinner_warning_type"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_layout_spinner"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginHorizontal="@dimen/normal_margin"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/img_bg_spinner_application"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_warning_type_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/warning_type"
+            android:textColor="@color/color_text_gray"
+            android:background="@color/color_bg_root"
+            android:translationZ="1dp"
+            android:paddingHorizontal="@dimen/small_margin"
+            app:layout_constraintStart_toStartOf="@id/img_bg_spinner_warning_type"
+            app:layout_constraintTop_toTopOf="@id/img_bg_spinner_warning_type"
+            app:layout_constraintBottom_toTopOf="@id/img_bg_spinner_warning_type"/>
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ic_expand_app_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_expand_more"
+            android:layout_marginEnd="@dimen/big_margin"
+            app:layout_constraintTop_toTopOf="@id/img_bg_spinner_warning_type"
+            app:layout_constraintBottom_toBottomOf="@id/img_bg_spinner_warning_type"
+            app:layout_constraintEnd_toEndOf="@id/img_bg_spinner_warning_type"/>
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinner_warning_type"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:popupBackground="#6f6f6f"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:dropDownVerticalOffset="60dp"
+            android:theme="@style/spinnerTheme"
+            android:paddingStart="@dimen/normal_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/img_bg_spinner_warning_type"
+            app:layout_constraintBottom_toBottomOf="@id/img_bg_spinner_warning_type"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_text_gray"
+            android:textSize="16sp"
+            android:text="@string/you_will_get_a_notification_when_exceed_the_limit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_bg_spinner_warning_type"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/small_margin"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_limit_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_text_gray"
+            android:textSize="16sp"
+            android:text="@string/limit_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_notification"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/big_margin"/>
+
+        <NumberPicker
+            android:id="@+id/number_picker_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:background="@drawable/bg_number_picker"
+            android:theme="@style/MyAppTheme.NumberPicker"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/number_picker_minus"
+            app:layout_constraintTop_toBottomOf="@id/tv_limit_time"/>
+
+        <NumberPicker
+            android:id="@+id/number_picker_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:background="@drawable/bg_number_picker"
+            android:theme="@style/MyAppTheme.NumberPicker"
+            android:layout_marginTop="@dimen/small_margin"
+            app:layout_constraintStart_toEndOf="@id/number_picker_hours"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_limit_time"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/edt_optional_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/big_margin"
+            android:hint="@string/optional_text_displayed_on_limit"
+            app:boxStrokeColor="@color/white"
+            app:hintTextColor="@color/color_text_gray"
+            android:textColorHint="@color/color_text_gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/number_picker_hours">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:textSize="14sp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_marginVertical="@dimen/big_margin"
+            android:layout_marginHorizontal="@dimen/normal_margin"
+            android:background="@drawable/bg_button_cancel"
+            android:textColor="@color/color_text_high_light"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_save"
+            app:layout_constraintTop_toBottomOf="@id/edt_optional_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:layout_marginBottom="@dimen/big_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:background="@drawable/bg_button_save"
+            android:layout_marginTop="@dimen/big_margin"
+            app:layout_constraintStart_toEndOf="@id/btn_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edt_optional_text"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+

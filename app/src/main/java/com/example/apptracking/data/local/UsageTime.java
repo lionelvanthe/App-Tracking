@@ -1,6 +1,7 @@
 package com.example.apptracking.data.local;
 
 import android.app.usage.UsageEvents;
+import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 
 import androidx.palette.graphics.Palette;
 
+import com.example.apptracking.AppApplication;
 import com.example.apptracking.data.model.App;
 import com.example.apptracking.utils.Const;
 import com.example.apptracking.utils.Utils;
@@ -25,10 +27,16 @@ public class UsageTime {
     UsageStatsManager mUsageStatsManager;
     private Context context;
 
+    private static UsageTime instance;
+
     private final HashMap<String, App> mapApp;
     private final HashMap<String, List<UsageEvents.Event>> mapEvents;
     private final ArrayList<Float> listUsageTimePerHourOfDevice;
     private long totalUsageTime = 0;
+
+    public HashMap<String, App> getMapApp() {
+        return mapApp;
+    }
 
     public UsageTime(Context context) {
         this.context = context;
@@ -36,6 +44,17 @@ public class UsageTime {
         mapEvents = new HashMap<>();
         listUsageTimePerHourOfDevice = new ArrayList<>();
         mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
+    }
+
+    public static UsageTime getInstance(Context context)
+    {
+        if (instance== null) {
+            synchronized(AppApplication.class) {
+                if (instance == null)
+                    instance = new UsageTime(context);
+            }
+        }
+        return instance;
     }
 
     public ArrayList<Float> getListUsageTimePerHourOfDevice() {
@@ -68,7 +87,12 @@ public class UsageTime {
             }
         }
         return apps;
-}
+    }
+
+    public long geUsageTimeFollowPackageName(String packageName) {
+        App app = mapApp.get(packageName);
+        return app.getUsageTimeOfDay();
+    }
 
     private void initHashMap(long startTime, long endTime) {
         UsageEvents.Event currentEvent;

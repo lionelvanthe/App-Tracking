@@ -9,7 +9,9 @@ import android.app.AppOpsManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Process;
+import android.view.WindowManager;
 
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -43,6 +45,11 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding, MainV
 
     @Override
     public void setupData() {
+        setStatusBarColor();
+    }
 
+    protected void setStatusBarColor(){
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.color_bg_root));
     }
 }

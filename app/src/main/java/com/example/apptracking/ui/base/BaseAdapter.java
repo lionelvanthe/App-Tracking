@@ -1,5 +1,6 @@
 package com.example.apptracking.ui.base;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -17,10 +18,14 @@ abstract public class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter<T>
     public List<T> list;
     private ItemClickListener<T> itemClickListener;
 
-    public BaseAdapter(int layoutId, List<T> list, ItemClickListener<T> itemClickListener) {
+    public BaseAdapter(int layoutId, ItemClickListener<T> itemClickListener) {
         this.layoutId = layoutId;
-        this.list = list;
         this.itemClickListener = itemClickListener;
+    }
+
+    public void setListData(List<T> list) {
+        this.list = list;
+        notifyDataSetChanged();
     }
 
     protected abstract BaseViewHolder setViewHolder(ViewDataBinding binding);

@@ -2,20 +2,15 @@ package com.example.apptracking.ui.fragment.home;
 
 import android.app.AppOpsManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import androidx.lifecycle.Observer;
 import com.example.apptracking.R;
 import com.example.apptracking.data.model.App;
-import com.example.apptracking.databinding.DialogUsageAccessPermissionBinding;
 import com.example.apptracking.databinding.FragmentHomeBinding;
-import com.example.apptracking.ui.adapter.AppAdapter;
+import com.example.apptracking.ui.adapter.AppUsageAdapter;
 import com.example.apptracking.ui.base.BaseAdapter;
 import com.example.apptracking.ui.base.BaseBindingFragment;
 import com.example.apptracking.ui.dialog.UsageAccessPermissionDialog;
@@ -28,7 +23,7 @@ import java.util.List;
 
 public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeViewModel> {
 
-    BaseAdapter<App> adapter;
+    AppUsageAdapter adapter;
     UsageAccessPermissionDialog accessPermissionDialog = null;
 
     @Override
@@ -46,8 +41,15 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
 
         if (isPermissionGranted()) {
             if (Hawk.get(Const.END_TIME_HOUR, -1) == -1) {
+
                 onPermissionGranted();
                 Hawk.put(Const.END_TIME_HOUR, 1);
+
+                adapter = new AppUsageAdapter(requireContext(),
+                        R.layout.item_app_layout,
+                        model -> {
+
+                        });
             }
         } else {
             binding.layoutRoot.setVisibility(View.GONE);
@@ -77,17 +79,11 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
 
     @Override
     protected void setupObserver() {
-        viewModel.apps.observe(this, new Observer<List<App>>() {
+        viewModel.apps.observe(getViewLifecycleOwner(), new Observer<List<App>>() {
             @Override
             public void onChanged(List<App> apps) {
-                if (adapter == null) {
-                    adapter = new AppAdapter(requireContext(),
-                            viewModel.getTotalUsageTime(),
-                            R.layout.item_app_layout, apps,
-                            model -> {
-
-                            });
-                }
+                adapter.setListData(apps);
+                adapter.setTotalUsageTime(viewModel.getTotalUsageTime());
                 binding.recyclerViewApp.setAdapter(adapter);
                 viewModel.getListUsageTimePerHourOfDevice();
                 binding.tvTotalUsageTimeContent.setText(Utils.formatMilliSeconds(viewModel.getTotalUsageTime()));
@@ -131,7 +127,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
             long timeNow = System.currentTimeMillis();
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(timeNow);
-            cal.set(Calendar.DAY_OF_MONTH, 18);
+            cal.set(Calendar.DAY_OF_MONTH, 28);
             cal.set(Calendar.HOUR_OF_DAY, 0);
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
@@ -139,7 +135,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
 
             Calendar cal2 = Calendar.getInstance();
             cal2.setTimeInMillis(timeNow);
-            cal2.set(Calendar.DAY_OF_MONTH, 18);
+            cal2.set(Calendar.DAY_OF_MONTH, 28);
             cal2.set(Calendar.HOUR_OF_DAY, 23);
             cal2.set(Calendar.MINUTE, 59);
             cal2.set(Calendar.SECOND, 59);

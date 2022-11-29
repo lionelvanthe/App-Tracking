@@ -73,7 +73,5 @@ dependencies {
 
     //save key-value
     implementation "com.orhanobut:hawk:2.0.1"
-
-    //shimmer
-    implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
+    implementation 'com.github.imtuann:FloatingActionButtonExpandable:1.1.2'
 }

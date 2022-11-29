@@ -1,10 +1,10 @@
 package com.example.apptracking.data.model;
 
 public class App {
-    private String name;
-    private String packageName;
-    private long usageTimeOfDay;
-    private long[] usageTimePerHour;
+    protected String name;
+    protected String packageName;
+    protected long usageTimeOfDay;
+    protected long[] usageTimePerHour;
 
     public App(String name, String packageName) {
         this.name = name;
@@ -15,6 +15,10 @@ public class App {
 
     public long getUsageTimeOfDay() {
         return usageTimeOfDay;
+    }
+
+    public void setUsageTimeOfDay(long usageTimeOfDay) {
+        this.usageTimeOfDay = usageTimeOfDay;
     }
 
     public long[] getUsageTimePerHour() {

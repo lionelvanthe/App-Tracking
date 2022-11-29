@@ -1,15 +1,29 @@
 package com.example.apptracking.data.repository;
 
+import android.app.Application;
+import android.app.usage.UsageStats;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.util.Log;
+
+import com.example.apptracking.AppApplication;
 import com.example.apptracking.data.local.UsageTime;
 import com.example.apptracking.data.model.App;
+import com.example.apptracking.data.model.AppUsageLimit;
+import com.example.apptracking.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class UsageTimeRepository {
     private UsageTime usageTime;
+
 
     public UsageTimeRepository(UsageTime usageTime) {
         this.usageTime = usageTime;
@@ -27,5 +41,39 @@ public class UsageTimeRepository {
 
     public long getTotalUsageTime() {
         return usageTime.getTotalUsageTime();
+    }
+
+    public Single<ArrayList<AppUsageLimit>> getAppsInstalled(Application application) {
+        return Single.fromCallable(() ->getApps(application))
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    private ArrayList<AppUsageLimit> getApps(Application application) {
+
+        ArrayList<AppUsageLimit> appUsageLimits = new ArrayList<>();
+
+        final PackageManager pm = application.getPackageManager();
+        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+
+        HashMap<String, App> mapApp = getMapApp();
+        for (ApplicationInfo packageInfo : packages) {
+            if (!Utils.isSystemApp(application.getPackageManager(), packageInfo.packageName)) {
+                AppUsageLimit appUsageLimit;
+                if (mapApp.get(packageInfo.packageName) == null) {
+                    appUsageLimit = new AppUsageLimit(Utils.parsePackageName(application.getPackageManager(), packageInfo.packageName) , packageInfo.packageName);
+                    appUsageLimit.setUsageTimeOfDay(0);
+                } else {
+                    App app =  mapApp.get(packageInfo.packageName);
+                    appUsageLimit = new AppUsageLimit(app.getName(), app.getPackageName());
+                    appUsageLimit.setUsageTimeOfDay(app.getUsageTimeOfDay());
+                }
+                appUsageLimits.add(appUsageLimit);
+            }
+        }
+        return appUsageLimits;
+    }
+
+    public HashMap<String, App> getMapApp() {
+        return usageTime.getMapApp();
     }
 }

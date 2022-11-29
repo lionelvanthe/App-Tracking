@@ -44,12 +44,13 @@ public class HomeViewModel extends BaseViewModel {
     public HomeViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
-        UsageTime usageTime = new UsageTime(application);
+        UsageTime usageTime = UsageTime.getInstance(application);
         repository = new UsageTimeRepository(usageTime);
 
     }
 
     public void getListApp(long startTime, long endTime) {
+
         _isGetDataComplete.postValue(false);
         repository.getUsageTimeOfApps(startTime, endTime).subscribe(new SingleObserver<List<App>>() {
             @Override
