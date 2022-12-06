@@ -45,7 +45,7 @@ public class UsageTimeRepository {
 
     public Single<ArrayList<AppUsageLimit>> getAppsInstalled(Application application) {
         return Single.fromCallable(() ->getApps(application))
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+                .subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
     }
 
     private ArrayList<AppUsageLimit> getApps(Application application) {
@@ -60,11 +60,11 @@ public class UsageTimeRepository {
             if (!Utils.isSystemApp(application.getPackageManager(), packageInfo.packageName)) {
                 AppUsageLimit appUsageLimit;
                 if (mapApp.get(packageInfo.packageName) == null) {
-                    appUsageLimit = new AppUsageLimit(Utils.parsePackageName(application.getPackageManager(), packageInfo.packageName) , packageInfo.packageName);
+                    appUsageLimit = new AppUsageLimit(Utils.parsePackageName(application.getPackageManager(), packageInfo.packageName), packageInfo.packageName);
                     appUsageLimit.setUsageTimeOfDay(0);
                 } else {
                     App app =  mapApp.get(packageInfo.packageName);
-                    appUsageLimit = new AppUsageLimit(app.getName(), app.getPackageName());
+                    appUsageLimit = new AppUsageLimit(app.getName(), packageInfo.packageName);
                     appUsageLimit.setUsageTimeOfDay(app.getUsageTimeOfDay());
                 }
                 appUsageLimits.add(appUsageLimit);

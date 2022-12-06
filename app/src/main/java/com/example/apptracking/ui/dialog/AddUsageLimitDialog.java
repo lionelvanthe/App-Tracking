@@ -1,10 +1,10 @@
 package com.example.apptracking.ui.dialog;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -24,12 +24,15 @@ import com.example.apptracking.interfaces.ItemClickListener;
 import com.example.apptracking.ui.adapter.AppAdapter;
 import com.example.apptracking.ui.base.BaseBindingDialogFragment;
 import com.example.apptracking.ui.fragment.usagelimits.UsageLimitsViewModel;
+import com.example.apptracking.utils.Const;
 import com.example.apptracking.utils.Utils;
 import java.util.List;
 
 public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsageLimitBinding> {
 
     private UsageLimitsViewModel viewModel;
+
+    private AppUsageLimit appUsageLimit;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +48,10 @@ public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsag
 
     @Override
     protected void onCreatedView(View view, Bundle savedInstanceState) {
+
+        appUsageLimit = new AppUsageLimit(Const.TOTAL_USAGE, "com.example.totalusage");
         viewModel = new ViewModelProvider(this).get(UsageLimitsViewModel.class);
+        appUsageLimit.setUsageTimeOfDay(viewModel.getTotalUsageTime());
         viewModel.getAppUsageTimeLimit();
         binding.imgBgSpinnerApplication.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,12 +60,12 @@ public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsag
             }
         });
 
-        setUpPopupWarningType();
+        setUpPopupWarningType(R.array.waring_type_total_usage);
 
         setValueOfNumberPicker(binding.numberPickerHours, 12, getResources().getStringArray(R.array.hours));
-        setValueOfNumberPicker(binding.numberPickerMinus, 59, getResources().getStringArray(R.array.minus));
-        Log.d("Thenv", "onCreatedView: " + ConstraintLayout.LayoutParams.MATCH_PARENT);
-        binding.spinnerWarningType.setDropDownWidth(ConstraintLayout.LayoutParams.MATCH_PARENT);
+        setValueOfNumberPicker(binding.numberPickerMinus, 58, getResources().getStringArray(R.array.minus));
+
+
         binding.edtOptionalText.setBoxStrokeColor(ContextCompat.getColor(requireContext(), R.color.white));
 
         setUpListener();
@@ -78,9 +84,17 @@ public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsag
             @Override
             public void onClick(View v) {
                 dismiss();
-
+                long timeLimit = timeToMillis(binding.numberPickerHours.getValue(), binding.numberPickerMinus.getValue() + 1);
+                appUsageLimit.setUsageTimeLimit(timeLimit);
+                appUsageLimit.setWarningType(binding.spinnerWarningType.getSelectedItem().toString());
+                viewModel.createAppUsageLimit(appUsageLimit);
             }
         });
+    }
+
+    private long timeToMillis(int hours, int minus) {
+        long second = hours*3600L + minus* 60L;
+        return second*1000;
     }
 
 
@@ -90,24 +104,12 @@ public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsag
         numberPicker.setDisplayedValues(values);
     }
 
-    private void setUpPopupWarningType() {
+    private void setUpPopupWarningType(int textArrayResId) {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
-                R.array.warning_type,
+                textArrayResId,
                 android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerWarningType.setAdapter(adapter);
-
-        binding.spinnerWarningType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     private void setUpPopUpAppInstalled() {
@@ -127,6 +129,12 @@ public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsag
         AppAdapter adapter = new AppAdapter(requireContext(), R.layout.item_spinner_app_layout, new ItemClickListener<AppUsageLimit>() {
             @Override
             public void onClickListener(AppUsageLimit model) {
+                if (!model.getName().equals(Const.TOTAL_USAGE)) {
+                    appUsageLimit = model;
+                    setUpPopupWarningType(R.array.warning_type);
+                } else {
+                    setUpPopupWarningType(R.array.waring_type_total_usage);
+                }
                 binding.imgIconApp.setBackground(Utils.getPackageIcon(requireContext(), model.getPackageName()));
                 binding.tvAppName.setText(model.getName());
                 popUp.dismiss();
@@ -136,6 +144,9 @@ public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsag
         viewModel.appUsageLimits.observe(getViewLifecycleOwner(), new Observer<List<AppUsageLimit>>() {
             @Override
             public void onChanged(List<AppUsageLimit> appUsageLimits) {
+                if (!appUsageLimits.get(0).getName().equals(Const.TOTAL_USAGE)) {
+                    appUsageLimits.add(0, appUsageLimit);
+                }
                 adapter.setListData(appUsageLimits);
                 bd.recyclerViewApplication.setAdapter(adapter);
                 popUp.showAsDropDown(binding.imgBgSpinnerApplication);

@@ -9,13 +9,8 @@ import android.view.Window;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
-
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import dagger.hilt.android.AndroidEntryPoint;
-
-//@AndroidEntryPoint
 public class BaseDialogFragment extends BottomSheetDialogFragment {
 
     @NonNull

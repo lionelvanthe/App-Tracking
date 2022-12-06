@@ -46,6 +46,16 @@ abstract public class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter<T>
     }
 
     @Override
+    public long getItemId(int position) {
+        return (long) position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull BaseAdapter.BaseViewHolder holder, int position) {
         holder.bindData(list.get(position));
         holder.clickListener(list.get(position), itemClickListener);
@@ -61,4 +71,5 @@ abstract public class BaseAdapter<T> extends RecyclerView.Adapter<BaseAdapter<T>
         protected abstract void clickListener(T data, ItemClickListener<T> itemClickListener);
 
     }
+
 }

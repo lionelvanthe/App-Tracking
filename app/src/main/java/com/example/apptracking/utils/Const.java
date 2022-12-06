@@ -7,4 +7,8 @@ public final class Const {
     public static final String END_TIME_HOUR = "end_time_hour";
     public static final String SORT_TYPE = "sort_type";
 
+    public static final String DB_NAME = "app_tracking.db";
+
+    public static final String TOTAL_USAGE = "Total Usage";
+
 }

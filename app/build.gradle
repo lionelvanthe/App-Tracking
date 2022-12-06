@@ -42,18 +42,11 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
-    /* Dagger2 - We are going to use dagger.android which includes
-     * support for Activity and fragment injection so we need to include
-     * the following dependencies */
-    implementation 'com.google.dagger:dagger-android:2.35.1'
-    implementation 'com.google.dagger:dagger-android-support:2.17'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.17'
+    //Room database
+    implementation "androidx.room:room-runtime:2.4.3"
+    annotationProcessor  "androidx.room:room-compiler:2.4.3"
+    implementation "androidx.room:room-rxjava3:2.4.3"
 
-    /* Dagger2 - default dependency */
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
-    // hilt
-    implementation 'com.google.dagger:hilt-android:2.44'
-    annotationProcessor 'com.google.dagger:hilt-compiler:2.44'
 
     //navigation component
     implementation "androidx.navigation:navigation-fragment:2.5.3"

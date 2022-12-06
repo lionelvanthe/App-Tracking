@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
+import android.util.Log;
 import android.view.View;
 import androidx.lifecycle.Observer;
 import com.example.apptracking.R;
@@ -63,6 +64,11 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
     public void onResume() {
         super.onResume();
         if (accessPermissionDialog != null && isPermissionGranted()) {
+            adapter = new AppUsageAdapter(requireContext(),
+                    R.layout.item_app_layout,
+                    model -> {
+
+                    });
             accessPermissionDialog.dismiss();
             binding.layoutRoot.setVisibility(View.VISIBLE);
             if (Hawk.get(Const.END_TIME_HOUR, -1) == -1) {
@@ -82,11 +88,13 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
         viewModel.apps.observe(getViewLifecycleOwner(), new Observer<List<App>>() {
             @Override
             public void onChanged(List<App> apps) {
-                adapter.setListData(apps);
-                adapter.setTotalUsageTime(viewModel.getTotalUsageTime());
-                binding.recyclerViewApp.setAdapter(adapter);
-                viewModel.getListUsageTimePerHourOfDevice();
-                binding.tvTotalUsageTimeContent.setText(Utils.formatMilliSeconds(viewModel.getTotalUsageTime()));
+                if (apps != null) {
+                    adapter.setListData(apps);
+                    adapter.setTotalUsageTime(viewModel.getTotalUsageTime());
+                    binding.recyclerViewApp.setAdapter(adapter);
+                    viewModel.getListUsageTimePerHourOfDevice();
+                    binding.tvTotalUsageTimeContent.setText(Utils.formatMilliSeconds(viewModel.getTotalUsageTime()));
+                }
             }
         });
 
@@ -127,7 +135,6 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
             long timeNow = System.currentTimeMillis();
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(timeNow);
-            cal.set(Calendar.DAY_OF_MONTH, 28);
             cal.set(Calendar.HOUR_OF_DAY, 0);
             cal.set(Calendar.MINUTE, 0);
             cal.set(Calendar.SECOND, 0);
@@ -135,7 +142,6 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
 
             Calendar cal2 = Calendar.getInstance();
             cal2.setTimeInMillis(timeNow);
-            cal2.set(Calendar.DAY_OF_MONTH, 28);
             cal2.set(Calendar.HOUR_OF_DAY, 23);
             cal2.set(Calendar.MINUTE, 59);
             cal2.set(Calendar.SECOND, 59);

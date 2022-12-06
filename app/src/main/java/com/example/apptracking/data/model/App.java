@@ -1,12 +1,19 @@
 package com.example.apptracking.data.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 public class App {
+    @PrimaryKey
+    @NonNull
     protected String name;
     protected String packageName;
     protected long usageTimeOfDay;
+    @Ignore
     protected long[] usageTimePerHour;
 
-    public App(String name, String packageName) {
+    public App(@NonNull String name, String packageName) {
         this.name = name;
         this.packageName = packageName;
         usageTimePerHour = new long[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};

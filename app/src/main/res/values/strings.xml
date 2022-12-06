@@ -9,12 +9,13 @@
     <string name="usage_time_percent">%1$s %%</string>
     <string name="usage_time_minus">%1$s m</string>
     <string name="usage_time_second">%1$s s</string>
+    <string name="today_usage">Today\'s usage: %s</string>
 
     <string name="name_a_to_z">Name (A to Z)</string>
     <string name="name_z_to_a">Name (Z to A)</string>
     <string name="usage_time_largest">Usage time largest</string>
     <string name="usage_time_smallest">Usage time smallest</string>
-    <string name="permission_please">Permission... Please</string>
+    <string name="permission_please">Permission… Please</string>
     <string name="the_usage_permission_provides_access_to_your_app_usage_stats_app_tracking_will_not_work_without_this_permission">The usage permission provides access to your app usage stats. App Tracking will not work without this permission!</string>
     <string name="grant_permission">GRANT PERMISSION</string>
     <string name="no_usage_limits_created">No usage limits created</string>
@@ -29,30 +30,35 @@
     <string name="cancel">CANCEL</string>
     <string name="save">SAVE</string>
     <string name="total_usage_in_limit">Total Usage</string>
+    <string name="limit_reached">Limit reached</string>
+
+    <string name="name_alarm">Alarm %d</string>
 
 
-<string-array name="warning_type">
-    <item>Send Notification</item>
-    <item>Block Further Usage</item>
-</string-array>
-    <string-array name="hours">
-        <item>0hrs</item>
-        <item>1hrs</item>
-        <item>2hrs</item>
-        <item>3hrs</item>
-        <item>4hrs</item>
-        <item>5hrs</item>
-        <item>6hrs</item>
-        <item>7hrs</item>
-        <item>8hrs</item>
-        <item>9hrs</item>
-        <item>10hrs</item>
-        <item>11hrs</item>
-        <item>12hrs</item>
+    <string-array name="warning_type">
+        <item>Send Notification</item>
+        <item>Block Further Usage</item>
     </string-array>
 
+    <string-array name="waring_type_total_usage">
+        <item>Send Notification</item>
+    </string-array>
+    <string-array name="hours">
+        <item>0 hrs</item>
+        <item>1 hrs</item>
+        <item>2 hrs</item>
+        <item>3 hrs</item>
+        <item>4 hrs</item>
+        <item>5 hrs</item>
+        <item>6 hrs</item>
+        <item>7 hrs</item>
+        <item>8 hrs</item>
+        <item>9 hrs</item>
+        <item>10 hrs</item>
+        <item>11 hrs</item>
+        <item>12 hrs</item>
+    </string-array>
     <string-array name="minus">
-        <item>0 mins</item>
         <item>1 mins</item>
         <item>2 mins</item>
         <item>3 mins</item>
@@ -114,4 +120,5 @@
         <item>59 mins</item>
 
     </string-array>
+
 </resources>

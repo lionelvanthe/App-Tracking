@@ -42,18 +42,18 @@
                 android:padding="@dimen/icon_padding"
                 android:src="@drawable/ic_search"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/img_share"
+                app:layout_constraintEnd_toStartOf="@id/img_delete"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/img_share"
+                android:id="@+id/img_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/normal_margin"
                 android:adjustViewBounds="true"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="@dimen/icon_padding"
-                android:src="@drawable/ic_share"
+                android:src="@drawable/ic_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
@@ -105,10 +105,14 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_vie_app_usage_limit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
             tools:listitem="@layout/item_app_layout"
             tools:itemCount="30"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar"
             app:layout_constraintStart_toStartOf="parent"/>
 

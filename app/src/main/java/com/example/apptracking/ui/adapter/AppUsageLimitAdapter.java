@@ -1,53 +1,41 @@
 package com.example.apptracking.ui.adapter;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.palette.graphics.Palette;
 
 import com.example.apptracking.R;
-import com.example.apptracking.data.model.App;
 import com.example.apptracking.data.model.AppUsageLimit;
-import com.example.apptracking.databinding.ItemAppLayoutBinding;
+import com.example.apptracking.databinding.ItemAppUsageLimitLayoutBinding;
 import com.example.apptracking.databinding.ItemSpinnerAppLayoutBinding;
 import com.example.apptracking.interfaces.ItemClickListener;
 import com.example.apptracking.ui.base.BaseAdapter;
 import com.example.apptracking.utils.Const;
 import com.example.apptracking.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
-public class AppAdapter extends BaseAdapter<AppUsageLimit> {
+public class AppUsageLimitAdapter extends BaseAdapter<AppUsageLimit> {
 
     private Context context;
 
-    public AppAdapter(Context context, int layoutId, ItemClickListener<AppUsageLimit> itemClickListener) {
+    public AppUsageLimitAdapter(Context context, int layoutId, ItemClickListener<AppUsageLimit> itemClickListener) {
         super(layoutId, itemClickListener);
         this.context = context;
     }
 
-    @NonNull
     @Override
-    public BaseViewHolder setViewHolder(@NonNull ViewDataBinding binding) {
-        return new AppAdapter.AppViewHolder((ItemSpinnerAppLayoutBinding) binding);
+    protected BaseAdapter<AppUsageLimit>.BaseViewHolder setViewHolder(ViewDataBinding binding) {
+        return new AppUsageLimitViewHolder((ItemAppUsageLimitLayoutBinding) binding);
     }
 
-    class AppViewHolder extends BaseViewHolder {
+    class AppUsageLimitViewHolder extends BaseViewHolder {
 
-        private ItemSpinnerAppLayoutBinding binding;
+        private ItemAppUsageLimitLayoutBinding binding;
 
-        public AppViewHolder(@NonNull ItemSpinnerAppLayoutBinding binding) {
+        public AppUsageLimitViewHolder(@NonNull ItemAppUsageLimitLayoutBinding binding) {
             super(binding);
             this.binding = binding;
         }
@@ -59,17 +47,24 @@ public class AppAdapter extends BaseAdapter<AppUsageLimit> {
             } else {
                 binding.imgIconApp.setBackground(Utils.getPackageIcon(context, data.getPackageName()));
             }
+            double percentUsageTime = 0;
+            percentUsageTime = (double)(data.getUsageTimeOfDay() * 100) / (double) (data.getUsageTimeLimit());
             binding.tvAppName.setText(data.getName());
+
+            binding.tvUsageTimeLimit.setText(Utils.formatMilliSeconds(data.getUsageTimeLimit()));
+            binding.tvTodayUsage.setText(context.getString(R.string.today_usage, Utils.formatMilliSeconds(data.getUsageTimeOfDay())));
+
+            if (percentUsageTime >= 100) {
+                binding.tvPercent.setText(context.getString(R.string.limit_reached));
+            } else {
+                binding.tvPercent.setText(context.getString(R.string.usage_time_percent, String.format(Locale.getDefault(),"%,.1f", percentUsageTime)));
+
+            }
         }
 
         @Override
         public void clickListener(@NonNull AppUsageLimit data, @NonNull ItemClickListener<AppUsageLimit> itemClickListener) {
-            binding.layoutApp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemClickListener.onClickListener(data);
-                }
-            });
+
         }
     }
 }
