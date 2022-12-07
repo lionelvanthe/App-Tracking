@@ -7,7 +7,11 @@ import android.os.Bundle;
 import android.os.Process;
 import android.util.Log;
 import android.view.View;
+
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+
 import com.example.apptracking.R;
 import com.example.apptracking.data.model.App;
 import com.example.apptracking.databinding.FragmentHomeBinding;
@@ -59,7 +63,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
             accessPermissionDialog.show(requireActivity().getSupportFragmentManager(), "usage_access_permission");
         }
     }
-    
+
     @Override
     public void onResume() {
         super.onResume();
@@ -80,7 +84,13 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
 
     @Override
     protected void setupLister() {
-
+        binding.layoutLinaerMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavDirections action = HomeFragmentDirections.actionNavigationHomeToMoreFragment();
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
     }
 
     @Override
@@ -101,7 +111,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
         viewModel.listUsageTimePerHourOfDevice.observe(this, new Observer<List<Float>>() {
             @Override
             public void onChanged(List<Float> floats) {
-                binding.barView.setDataList(floats,60);
+                binding.barView.setDataList(floats, 60);
             }
         });
 

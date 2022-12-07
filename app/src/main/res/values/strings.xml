@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">App Tracking</string>
     <string name="home_title">Home</string>
     <string name="usage_limits">Usage limits</string>
@@ -120,5 +120,14 @@
         <item>59 mins</item>
 
     </string-array>
+
+
+
+    <!--    By vanninh200x-->
+    <string name="insights">Insights</string>
+    <string name="stats">Stats</string>
+    <string name="settings">Settings</string>
+    <string name="today_s_app_usage" >Today\'s App Usage</string>
+
 
 </resources>
