@@ -16,8 +16,8 @@ public class UsageInfoAdapter extends BaseAdapter<App> {
     private long totalUsageTime;
     private Context context;
 
-    public UsageInfoAdapter(Context context, long totalUsageTime, int layoutID, @NonNull List<App> list, @NonNull ItemClickListener<App> itemClickListener) {
-        super(layoutID, list, itemClickListener);
+    public UsageInfoAdapter(Context context, long totalUsageTime, int layoutID, @NonNull ItemClickListener<App> itemClickListener) {
+        super(layoutID, itemClickListener);
         this.context = context;
         this.totalUsageTime = totalUsageTime;
     }

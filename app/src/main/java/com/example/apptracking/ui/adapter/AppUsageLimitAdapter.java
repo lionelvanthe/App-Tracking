@@ -64,7 +64,12 @@ public class AppUsageLimitAdapter extends BaseAdapter<AppUsageLimit> {
 
         @Override
         public void clickListener(@NonNull AppUsageLimit data, @NonNull ItemClickListener<AppUsageLimit> itemClickListener) {
-
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onClickListener(data);
+                }
+            });
         }
     }
 }

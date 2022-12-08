@@ -1,6 +1,5 @@
 package com.example.apptracking.ui.base;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;

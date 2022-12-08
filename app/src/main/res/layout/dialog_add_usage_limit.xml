@@ -9,26 +9,58 @@
         android:layout_height="wrap_content"
         android:background="@color/color_bg_root">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="@dimen/big_margin"
+            android:layout_height="@dimen/big_margin"
+            app:cardCornerRadius="4dp"
+            android:layout_marginStart="@dimen/normal_margin"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon_app"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_launcher_foreground"/>
+
+        </androidx.cardview.widget.CardView>
+
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_a_usage_limit"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="@dimen/normal_margin"
-            android:layout_marginTop="@dimen/normal_margin"/>
+            android:layout_marginTop="@dimen/normal_margin"
+            app:layout_constraintStart_toEndOf="@id/card_view"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ic_delete_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete_item"
+            android:padding="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_bg_spinner_application"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="60dp"
             android:background="@drawable/bg_layout_spinner"
             android:layout_marginTop="@dimen/big_margin"
             android:layout_marginHorizontal="@dimen/normal_margin"
-            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -39,17 +71,18 @@
             android:textColor="@color/color_text_gray"
             android:background="@color/color_bg_root"
             android:translationZ="1dp"
+            android:layout_marginStart="@dimen/normal_margin"
             android:paddingHorizontal="@dimen/small_margin"
             app:layout_constraintStart_toStartOf="@id/img_bg_spinner_application"
             app:layout_constraintTop_toTopOf="@id/img_bg_spinner_application"
             app:layout_constraintBottom_toTopOf="@id/img_bg_spinner_application"/>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_view"
+            android:id="@+id/card_view2"
             android:layout_width="@dimen/large_margin"
             android:layout_height="@dimen/large_margin"
             app:cardCornerRadius="13dp"
-            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginStart="@dimen/big_margin"
             app:cardBackgroundColor="@android:color/transparent"
             app:layout_constraintStart_toStartOf="@id/img_bg_spinner_application"
             app:layout_constraintTop_toTopOf="@id/img_bg_spinner_application"
@@ -73,9 +106,9 @@
             android:layout_marginStart="@dimen/small_margin"
             android:ellipsize="end"
             android:maxLines="1"
-            app:layout_constraintStart_toEndOf="@id/card_view"
-            app:layout_constraintTop_toTopOf="@id/card_view"
-            app:layout_constraintBottom_toBottomOf="@id/card_view"
+            app:layout_constraintStart_toEndOf="@id/card_view2"
+            app:layout_constraintTop_toTopOf="@id/card_view2"
+            app:layout_constraintBottom_toBottomOf="@id/card_view2"
             app:layout_constraintVertical_chainStyle="spread_inside"
             app:layout_constraintEnd_toStartOf="@id/ic_expand_app"/>
 
@@ -93,12 +126,13 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_bg_spinner_warning_type"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="60dp"
             android:background="@drawable/bg_layout_spinner"
             android:layout_marginTop="@dimen/big_margin"
             android:layout_marginHorizontal="@dimen/normal_margin"
-            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/img_bg_spinner_application"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -110,6 +144,7 @@
             android:background="@color/color_bg_root"
             android:translationZ="1dp"
             android:paddingHorizontal="@dimen/small_margin"
+            android:layout_marginStart="@dimen/normal_margin"
             app:layout_constraintStart_toStartOf="@id/img_bg_spinner_warning_type"
             app:layout_constraintTop_toTopOf="@id/img_bg_spinner_warning_type"
             app:layout_constraintBottom_toTopOf="@id/img_bg_spinner_warning_type"/>
@@ -192,7 +227,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/edt_optional_text"
+            android:id="@+id/text_input_layout_optional_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/normal_margin"
@@ -206,6 +241,7 @@
             app:layout_constraintTop_toBottomOf="@id/number_picker_hours">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_input_optional_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColor="@color/white"
@@ -224,7 +260,7 @@
             android:textColor="@color/color_text_high_light"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_save"
-            app:layout_constraintTop_toBottomOf="@id/edt_optional_text"
+            app:layout_constraintTop_toBottomOf="@id/text_input_layout_optional_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed"/>
 
@@ -239,7 +275,7 @@
             android:layout_marginTop="@dimen/big_margin"
             app:layout_constraintStart_toEndOf="@id/btn_cancel"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edt_optional_text"
+            app:layout_constraintTop_toBottomOf="@id/text_input_layout_optional_text"
             app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

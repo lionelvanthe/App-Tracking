@@ -16,7 +16,8 @@ public class AppUsageLimit extends App implements Serializable {
 
     protected long usageTimeOfDay;
     private long usageTimeLimit = 0;
-    private String warningType;
+    private int warningType;
+    private String textDisplayed;
 
     public AppUsageLimit(String name, String packageName) {
         super(name, packageName);
@@ -31,11 +32,19 @@ public class AppUsageLimit extends App implements Serializable {
 
     }
 
-    public String getWarningType() {
+    public String getTextDisplayed() {
+        return textDisplayed;
+    }
+
+    public void setTextDisplayed(String textDisplayed) {
+        this.textDisplayed = textDisplayed;
+    }
+
+    public int getWarningType() {
         return warningType;
     }
 
-    public void setWarningType(String warningType) {
+    public void setWarningType(int warningType) {
         this.warningType = warningType;
     }
 

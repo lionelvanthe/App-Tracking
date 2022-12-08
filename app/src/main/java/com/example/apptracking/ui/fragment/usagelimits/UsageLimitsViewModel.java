@@ -92,6 +92,10 @@ public class UsageLimitsViewModel extends BaseViewModel {
         appUsageLimitRepository.createAppUsageLimit(appUsageLimit);
     }
 
+    public void deleteAppUsageLimit(AppUsageLimit appUsageLimit) {
+        appUsageLimitRepository.deleteAppUsageLimit(appUsageLimit);
+    }
+
     public void deleteAllAppUsageLimit() {
         appUsageLimitRepository.deleteAllAppUsageLimit();
     }

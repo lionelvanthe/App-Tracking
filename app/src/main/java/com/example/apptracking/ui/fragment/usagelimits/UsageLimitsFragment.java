@@ -6,6 +6,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apptracking.R;
@@ -16,6 +18,7 @@ import com.example.apptracking.ui.adapter.AppUsageLimitAdapter;
 import com.example.apptracking.ui.base.BaseBindingFragment;
 import com.example.apptracking.ui.dialog.AddUsageLimitDialog;
 import com.example.apptracking.ui.dialog.UsageAccessPermissionDialog;
+import com.example.apptracking.ui.fragment.home.HomeFragmentDirections;
 
 import java.util.List;
 
@@ -39,6 +42,8 @@ public class UsageLimitsFragment extends BaseBindingFragment<FragmentUsageLimits
         adapter = new AppUsageLimitAdapter(requireContext(), R.layout.item_app_usage_limit_layout, new ItemClickListener<AppUsageLimit>() {
             @Override
             public void onClickListener(AppUsageLimit model) {
+                NavDirections action = UsageLimitsFragmentDirections.actionNavigationUsageLimitsToAddUsageLimitDialog(model);
+                Navigation.findNavController(view).navigate(action);
 
             }
         });
@@ -61,8 +66,8 @@ public class UsageLimitsFragment extends BaseBindingFragment<FragmentUsageLimits
         binding.fabAddUsageLimit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddUsageLimitDialog addUsageLimitDialog = new AddUsageLimitDialog();
-                addUsageLimitDialog.show(requireActivity().getSupportFragmentManager(), "usage_limit_permission");
+                NavDirections action = UsageLimitsFragmentDirections.actionNavigationUsageLimitsToAddUsageLimitDialog(null);
+                Navigation.findNavController(v).navigate(action);
             }
         });
 

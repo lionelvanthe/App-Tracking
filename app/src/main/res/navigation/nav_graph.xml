@@ -1,5 +1,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/mobile_navigation"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
     app:startDestination="@id/navigation_home">
 
     <fragment
@@ -13,7 +15,12 @@
     <fragment
         android:id="@+id/navigation_usage_limits"
         android:name="com.example.apptracking.ui.fragment.usagelimits.UsageLimitsFragment"
-        android:label="UsageLimitsFragment" />
+        android:label="UsageLimitsFragment"
+        tools:layout="@layout/fragment_usage_limits">
+        <action
+            android:id="@+id/action_navigation_usage_limits_to_addUsageLimitDialog"
+            app:destination="@id/addUsageLimitDialog" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_more"
         android:name="com.example.apptracking.ui.fragment.more.MoreFragment"
@@ -22,4 +29,15 @@
             android:id="@+id/action_navigation_more_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
+    <dialog
+        android:id="@+id/addUsageLimitDialog"
+        android:name="com.example.apptracking.ui.dialog.AddUsageLimitDialog"
+        android:label="AddUsageLimitDialog"
+        tools:layout="@layout/dialog_add_usage_limit">
+        <argument
+            android:name="appUsageLimit"
+            app:argType="com.example.apptracking.data.model.AppUsageLimit"
+            app:nullable="true"
+            />
+    </dialog>
 </navigation>

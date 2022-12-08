@@ -76,7 +76,7 @@ public class Utils {
         long second = milliSeconds / 1000L;
         if (second < 60) {
             return String.format("%ss", second);
-        } else if (second < 60 * 60) {
+        } else if (second < 60 * 60 || (second % (3600) % 60) == 0) {
             return String.format("%sm %ss", second / 60, second % 60);
         } else {
             return String.format("%sh %sm %ss", second / 3600, second % (3600) / 60, second % (3600) % 60);

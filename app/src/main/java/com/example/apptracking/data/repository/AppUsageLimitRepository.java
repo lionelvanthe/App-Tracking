@@ -23,10 +23,6 @@ public class AppUsageLimitRepository {
         return appUsageLimitDAO.getAppUsageLimits();
     }
 
-    public void changeTimeLimit(long time, String name) {
-        appUsageLimitDAO.changeTimeLimit(time, name);
-    }
-
     public void deleteAppUsageLimit(AppUsageLimit alarm) {
         appUsageLimitDAO.deleteAppUsageLimit(alarm);
     }
