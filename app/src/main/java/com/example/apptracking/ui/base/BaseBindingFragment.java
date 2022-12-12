@@ -31,8 +31,12 @@ abstract public class BaseBindingFragment<B extends ViewDataBinding, VM extends 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
-        viewModel = new ViewModelProvider(this).get(getViewModel());
+        if (binding == null) {
+            binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+        }
+        if (viewModel == null) {
+            viewModel = new ViewModelProvider(this).get(getViewModel());
+        }
         return binding.getRoot();
     }
 

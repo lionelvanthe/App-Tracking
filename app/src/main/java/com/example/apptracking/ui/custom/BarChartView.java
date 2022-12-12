@@ -83,6 +83,9 @@ public class BarChartView extends View {
         percentList = new ArrayList<>();
         bottomTextList = new ArrayList<>();
 
+        targetPercentList = new ArrayList<>();
+        topTextList = new ArrayList<>();
+
         setBottomTextList();
     }
 
@@ -94,7 +97,7 @@ public class BarChartView extends View {
     }
 
     public void setBottomTextList() {
-        this.bottomTextList = new ArrayList<>();
+//        this.bottomTextList = new ArrayList<>();
         for (int i = 0 ; i <24 ; i++) {
             this.bottomTextList.add(String.valueOf(i));
         }
@@ -117,8 +120,6 @@ public class BarChartView extends View {
     }
 
     public void setDataList(List<Float> list, int max) {
-        targetPercentList = new ArrayList<>();
-        topTextList = new ArrayList<>();
         if (max == 0) max = 1;
 
         for (Float data : list) {

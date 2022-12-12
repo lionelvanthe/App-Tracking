@@ -1,5 +1,7 @@
 package com.example.apptracking.ui.dialog;
 
+import android.app.AlarmManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,8 @@ import com.example.apptracking.ui.base.BaseBindingDialogFragment;
 import com.example.apptracking.ui.fragment.usagelimits.UsageLimitsViewModel;
 import com.example.apptracking.utils.Const;
 import com.example.apptracking.utils.Utils;
+
+import java.util.Calendar;
 import java.util.List;
 
 public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsageLimitBinding> {
@@ -105,11 +109,8 @@ public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsag
             @Override
             public void onClick(View v) {
                 dismiss();
-                long timeLimit = timeToMillis(binding.numberPickerHours.getValue(), binding.numberPickerMinus.getValue() + 1);
-                appUsageLimit.setUsageTimeLimit(timeLimit);
-                appUsageLimit.setWarningType(binding.spinnerWarningType.getSelectedItemPosition());
-                appUsageLimit.setTextDisplayed(binding.textInputOptionalText.getText().toString());
-                viewModel.createAppUsageLimit(appUsageLimit);
+                updateDatabase();
+                setUsageTimeLimit();
             }
         });
 
@@ -127,6 +128,19 @@ public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsag
                 dismiss();
             }
         });
+    }
+
+    private void setUsageTimeLimit() {
+        AlarmManager manager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
+        appUsageLimit.setAlarm(requireContext(), manager);
+    }
+
+    private void updateDatabase() {
+        long timeLimit = timeToMillis(binding.numberPickerHours.getValue(), binding.numberPickerMinus.getValue() + 1);
+        appUsageLimit.setUsageTimeLimit(timeLimit);
+        appUsageLimit.setWarningType(binding.spinnerWarningType.getSelectedItemPosition());
+        appUsageLimit.setTextDisplayed(binding.textInputOptionalText.getText().toString());
+        viewModel.createAppUsageLimit(appUsageLimit);
     }
 
     private long timeToMillis(int hours, int minus) {

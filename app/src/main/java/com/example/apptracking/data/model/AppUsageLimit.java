@@ -10,6 +10,7 @@ import androidx.room.PrimaryKey;
 import com.example.apptracking.broadcastreceiver.AlarmReceiver;
 import com.example.apptracking.ui.activity.main.MainActivity;
 import java.io.Serializable;
+import java.util.Calendar;
 
 @Entity(tableName = "appUsageLimit")
 public class AppUsageLimit extends App implements Serializable {
@@ -57,10 +58,10 @@ public class AppUsageLimit extends App implements Serializable {
     }
 
 
-//    public void setTime(Context context, AlarmManager manager, long timeMillis) {
-//        this.usageTimeLimit = timeMillis;
-//        //set(context, manager);
-//    }
+    public void setTime(Context context, AlarmManager manager, long timeMillis) {
+        this.usageTimeLimit = timeMillis;
+        //set(context, manager);
+    }
 
 //    @Nullable
 //    public Calendar getNext() {
@@ -72,8 +73,8 @@ public class AppUsageLimit extends App implements Serializable {
 //        return next;
 //
 //    }
-
-//    public Date set(Context context, AlarmManager manager) {
+//
+//    public void set(Context context, AlarmManager manager) {
 //        Calendar nextTime = getNext();
 //        if (nextTime != null) {
 //            setAlarm(context, manager, nextTime.getTimeInMillis());
@@ -83,31 +84,32 @@ public class AppUsageLimit extends App implements Serializable {
 //        }
 //    }
 
-//    private void setAlarm(Context context, AlarmManager manager, long timeMillis) {
-//        manager.setAlarmClock(
-//                new AlarmManager.AlarmClockInfo(
-//                        timeMillis,
-//                        PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0)
-//                ),
-//                getIntent(context)
-//        );
+    public void setAlarm(Context context, AlarmManager manager) {
+        manager.setAlarmClock(
+                new AlarmManager.AlarmClockInfo(
+                        Calendar.getInstance().getTimeInMillis() + this.usageTimeLimit - this.usageTimeOfDay,
+                        PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0)
+                ),
+                getIntent(context)
+        );
+
+//        manager.set(AlarmManager.RTC_WAKEUP,
+//                timeMillis - (long) PreferenceData.SLEEP_REMINDER_TIME.getValue(context),
+//                PendingIntent.getService(context, 0, new Intent(context, SleepReminderService.class), 0));
 //
-////        manager.set(AlarmManager.RTC_WAKEUP,
-////                timeMillis - (long) PreferenceData.SLEEP_REMINDER_TIME.getValue(context),
-////                PendingIntent.getService(context, 0, new Intent(context, SleepReminderService.class), 0));
-////
-////        SleepReminderService.refreshSleepTime(context);
-//    }
-//
-//    public void cancel(Context context, AlarmManager manager) {
-//        manager.cancel(getIntent(context));
-//
-//    }
-//
-//    private PendingIntent getIntent(Context context) {
-//        Intent intent = new Intent(context, AlarmReceiver.class);
-//        intent.putExtra(AlarmReceiver.EXTRA_ALARM_ID, id);
-//        return PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//    }
+//        SleepReminderService.refreshSleepTime(context);
+    }
+
+    public void cancel(Context context, AlarmManager manager) {
+        manager.cancel(getIntent(context));
+
+    }
+
+    private PendingIntent getIntent(Context context) {
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.putExtra(AlarmReceiver.EXTRA_ALARM_ID, this);
+//        intent.putExtra(AlarmReceiver.EXTRA_ALARM_ID, this.name);
+        return PendingIntent.getBroadcast(context, this.name.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
 }

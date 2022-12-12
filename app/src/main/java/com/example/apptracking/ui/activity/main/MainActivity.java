@@ -1,21 +1,16 @@
 package com.example.apptracking.ui.activity.main;
 
-
-
 import static androidx.navigation.Navigation.findNavController;
-import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavController;
-
 import android.app.AppOpsManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Process;
+import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
-
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-
 import com.example.apptracking.R;
 import com.example.apptracking.databinding.ActivityMainBinding;
 import com.example.apptracking.ui.base.BaseBindingActivity;
@@ -23,7 +18,14 @@ import com.example.apptracking.ui.dialog.UsageAccessPermissionDialog;
 import com.example.apptracking.utils.Const;
 import com.orhanobut.hawk.Hawk;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoField;
+import java.util.Calendar;
+
 public class MainActivity extends BaseBindingActivity<ActivityMainBinding, MainViewModel> {
+
+    UsageAccessPermissionDialog accessPermissionDialog;
 
     @Override
     public int getLayoutId() {
@@ -38,18 +40,65 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding, MainV
     @Override
     public void setupView(Bundle savedInstanceState) {
         NavController navController = findNavController(this, R.id.nav_host_fragment);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        if (!isPermissionGranted()) {
+            binding.getRoot().setVisibility(View.GONE);
+            accessPermissionDialog = new UsageAccessPermissionDialog();
+            accessPermissionDialog.setCancelable(false);
+            accessPermissionDialog.show(getSupportFragmentManager(), "usage_access_permission");
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (isPermissionGranted()) {
+            if (accessPermissionDialog != null) {
+                accessPermissionDialog.dismiss();
+            }
+            binding.getRoot().setVisibility(View.VISIBLE);
+            if (Hawk.get(Const.IS_TODAY, true)) {
+                getUsageTimeOfApps();
+            }
+        }
+    }
+
+    private boolean isPermissionGranted() {
+        AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+        int mode = appOps.checkOpNoThrow(
+                AppOpsManager.OPSTR_GET_USAGE_STATS,
+                Process.myUid(), getPackageName()
+        );
+        return mode == AppOpsManager.MODE_ALLOWED;
+    }
+
+    private void getUsageTimeOfApps() {
+        long startTime = 0;
+        long endTime = System.currentTimeMillis();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            startTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        }
+
+//        if (startTime <= Hawk.get(Const.TIMESTAMP_GO_TO_BACKGROUND, startTime)) {
+//            startTime = Hawk.get(Const.TIMESTAMP_GO_TO_BACKGROUND, startTime  );
+//        }
+
+        viewModel.getListApp(startTime, endTime);
     }
 
     @Override
     public void setupData() {
-        setStatusBarColor();
     }
 
     protected void setStatusBarColor(){
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.color_bg_root));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+//        Hawk.put(Const.TIMESTAMP_GO_TO_BACKGROUND, System.currentTimeMillis());
     }
 }

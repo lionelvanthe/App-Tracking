@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apptracking.R;
+import com.example.apptracking.data.local.UsageTime;
 import com.example.apptracking.data.model.AppUsageLimit;
 import com.example.apptracking.databinding.FragmentUsageLimitsBinding;
 import com.example.apptracking.interfaces.ItemClickListener;
@@ -38,7 +39,7 @@ public class UsageLimitsFragment extends BaseBindingFragment<FragmentUsageLimits
 
     @Override
     protected void onCreatedView(View view, Bundle savedInstanceState) {
-        viewModel.getUsageTimeToday();
+//        viewModel.getUsageTimeToday();
         adapter = new AppUsageLimitAdapter(requireContext(), R.layout.item_app_usage_limit_layout, new ItemClickListener<AppUsageLimit>() {
             @Override
             public void onClickListener(AppUsageLimit model) {
@@ -85,6 +86,9 @@ public class UsageLimitsFragment extends BaseBindingFragment<FragmentUsageLimits
             @Override
             public void onChanged(List<AppUsageLimit> appUsageLimits) {
                 if (appUsageLimits != null) {
+                    for (AppUsageLimit a: appUsageLimits) {
+//                        Log.d("Thenv", "onChanged: "+UsageTime.getInstance(requireContext()).geUsageTimeFollowPackageName(a.getPackageName()));
+                    }
                     adapter.setListData(appUsageLimits);
                     binding.recyclerVieAppUsageLimit.setAdapter(adapter);
                 }

@@ -35,8 +35,20 @@ public class UsageTimeRepository {
     }
 
     public Single<ArrayList<Float>> getListUsageTimePerHourOfDevice() {
-        return Single.fromCallable(() -> usageTime.getListUsageTimePerHourOfDevice())
+        return Single.fromCallable(() -> convertHashMapUsageTimePerHourToList(usageTime.getHashMapUsageTimePerHourOfDevice()))
                 .subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
+    }
+
+    private ArrayList<Float> convertHashMapUsageTimePerHourToList(HashMap<Integer, Float> hashMap) {
+        ArrayList<Float> listUsageTimePerHour = new ArrayList<>();
+        for (int i = 0 ; i < 24 ; i ++) {
+            if (hashMap.get(i) == null) {
+                listUsageTimePerHour.add(0F);
+            } else {
+                listUsageTimePerHour.add(hashMap.get(i));
+            }
+        }
+        return listUsageTimePerHour;
     }
 
     public long getTotalUsageTime() {
