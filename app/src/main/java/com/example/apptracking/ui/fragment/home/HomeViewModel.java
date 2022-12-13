@@ -32,6 +32,12 @@ public class HomeViewModel extends BaseViewModel {
 
     private UsageTimeRepository repository;
 
+    private MutableLiveData<List<App>> _apps = new MutableLiveData<>();
+    public LiveData<List<App>> apps  = _apps;
+
+    private MutableLiveData<Boolean> _isSortDataComplete = new  MutableLiveData<>();
+    public LiveData<Boolean> isSortDataComplete = _isSortDataComplete;
+
     private MutableLiveData<List<Float>> _listUsageTimePerHourOfDevice = new MutableLiveData<>();
     LiveData<List<Float>> listUsageTimePerHourOfDevice  = _listUsageTimePerHourOfDevice;
 
@@ -40,6 +46,28 @@ public class HomeViewModel extends BaseViewModel {
         UsageTime usageTime = UsageTime.getInstance(application);
         repository = new UsageTimeRepository(usageTime);
 
+    }
+
+    public void getApps() {
+        _isSortDataComplete.postValue(false);
+        repository.getApps().subscribe(new SingleObserver<List<App>>() {
+            @Override
+            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<App> apps) {
+                sortData(apps);
+                _apps.postValue(apps);
+                _isSortDataComplete.postValue(true);
+            }
+
+            @Override
+            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                _isSortDataComplete.postValue(false);
+            }
+        });
     }
 
 
@@ -61,6 +89,22 @@ public class HomeViewModel extends BaseViewModel {
 
             }
         });
+    }
+
+    private void sortData(List<App> apps) {
+        int currentSortType = Hawk.get(Const.SORT_TYPE, 0);
+
+        if (currentSortType == 0) {
+            Collections.sort(apps, (o1, o2) -> Long.compare(o2.getUsageTimeOfDay(), o1.getUsageTimeOfDay()));
+        } else if (currentSortType == 1) {
+            Collections.sort(apps, (o1, o2) -> Long.compare(o1.getUsageTimeOfDay(), o2.getUsageTimeOfDay()));
+        } else if (currentSortType == 2) {
+            Collections.sort(apps, (o1, o2) -> Collator.getInstance(new Locale("vi", "VN"))
+                    .compare(o1.getName().toLowerCase(), o2.getName().toLowerCase()));
+        } else {
+            Collections.sort(apps, (o1, o2) -> Collator.getInstance(new Locale("vi", "VN"))
+                    .compare(o2.getName().toLowerCase(), o1.getName().toLowerCase()));
+        }
     }
 
     public long getTotalUsageTime() {

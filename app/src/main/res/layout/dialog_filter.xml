@@ -1,13 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/color_bg_root">
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filter"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:layout_marginStart="@dimen/normal_margin"
+            android:layout_marginTop="@dimen/normal_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ic_calender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_calendar"
+            android:padding="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_bg_spinner_sort_type"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_layout_spinner"
+            android:layout_marginTop="@dimen/big_margin"
+            android:layout_marginHorizontal="@dimen/normal_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_sort_type_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sort_type"
+            android:textColor="@color/color_text_gray"
+            android:background="@color/color_bg_root"
+            android:translationZ="1dp"
+            android:paddingHorizontal="@dimen/small_margin"
+            android:layout_marginStart="@dimen/normal_margin"
+            app:layout_constraintStart_toStartOf="@id/img_bg_spinner_sort_type"
+            app:layout_constraintTop_toTopOf="@id/img_bg_spinner_sort_type"
+            app:layout_constraintBottom_toTopOf="@id/img_bg_spinner_sort_type"/>
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ic_expand_sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/small_margin"
+            android:src="@drawable/ic_expand_more"
+            android:layout_marginEnd="@dimen/big_margin"
+            app:layout_constraintTop_toTopOf="@id/img_bg_spinner_sort_type"
+            app:layout_constraintBottom_toBottomOf="@id/img_bg_spinner_sort_type"
+            app:layout_constraintEnd_toEndOf="@id/img_bg_spinner_sort_type"/>
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinner_sort_type"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:popupBackground="@color/bg_spinner"
+            android:layout_marginHorizontal="@dimen/normal_margin"
+            android:dropDownVerticalOffset="60dp"
+            android:theme="@style/spinnerTheme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/img_bg_spinner_sort_type"
+            app:layout_constraintBottom_toBottomOf="@id/img_bg_spinner_sort_type"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_marginVertical="@dimen/big_margin"
+            android:layout_marginHorizontal="@dimen/normal_margin"
+            android:background="@drawable/bg_button_cancel"
+            android:textColor="@color/color_text_high_light"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_save"
+            app:layout_constraintTop_toBottomOf="@id/spinner_sort_type"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:layout_marginBottom="@dimen/big_margin"
+            android:layout_marginEnd="@dimen/normal_margin"
+            android:background="@drawable/bg_button_save"
+            android:layout_marginTop="@dimen/big_margin"
+            app:layout_constraintStart_toEndOf="@id/btn_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spinner_sort_type"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
+
 

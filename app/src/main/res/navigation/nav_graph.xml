@@ -11,6 +11,9 @@
         <action
             android:id="@+id/action_navigation_home_to_moreFragment"
             app:destination="@id/navigation_more" />
+        <action
+            android:id="@+id/action_navigation_home_to_filterDialog"
+            app:destination="@id/filterDialog" />
     </fragment>
     <fragment
         android:id="@+id/navigation_usage_limits"
@@ -40,4 +43,8 @@
             app:nullable="true"
             />
     </dialog>
+    <dialog
+        android:id="@+id/filterDialog"
+        android:name="com.example.apptracking.ui.dialog.FilterDialog"
+        android:label="FilterDialog" />
 </navigation>

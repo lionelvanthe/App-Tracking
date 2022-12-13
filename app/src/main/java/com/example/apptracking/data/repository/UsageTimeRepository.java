@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -29,8 +30,13 @@ public class UsageTimeRepository {
         this.usageTime = usageTime;
     }
 
-    public Single<List<App>> getUsageTimeOfApps(long startTime, long endTime) {
-        return Single.fromCallable(() -> usageTime.getUsageTime(startTime, endTime))
+    public Completable getUsageTime(long startTime, long endTime, boolean isToday) {
+        return Completable.fromRunnable(() -> usageTime.getUsageTime(startTime, endTime, isToday))
+                .subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
+    }
+
+    public Single<List<App>> getApps() {
+        return Single.fromCallable(() -> usageTime.getApps())
                 .subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
     }
 

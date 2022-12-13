@@ -166,7 +166,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@android:color/transparent"
-            android:popupBackground="#6f6f6f"
+            android:popupBackground="@color/bg_spinner"
             android:layout_marginHorizontal="@dimen/normal_margin"
             android:dropDownVerticalOffset="60dp"
             android:theme="@style/spinnerTheme"

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
@@ -17,7 +18,10 @@ import com.example.apptracking.databinding.FragmentHomeBinding;
 import com.example.apptracking.ui.activity.main.MainViewModel;
 import com.example.apptracking.ui.adapter.AppUsageAdapter;
 import com.example.apptracking.ui.base.BaseBindingFragment;
+import com.example.apptracking.utils.Const;
 import com.example.apptracking.utils.Utils;
+import com.orhanobut.hawk.Hawk;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -47,6 +51,15 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
 
     @Override
     protected void onCreatedView(View view, Bundle savedInstanceState) {
+
+        getParentFragmentManager().setFragmentResultListener(Const.FILTER_KEY, this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                mainViewModel.getUsageTime(bundle.getLong(Const.START_TIME), bundle.getLong(Const.END_TIME), false);
+                Hawk.put(Const.IS_RETURN_FROM_BACKGROUND, true);
+            }
+        });
+
         adapter = new AppUsageAdapter(requireContext(),
                 R.layout.item_app_layout,
                 model -> {
@@ -63,19 +76,39 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
                 Navigation.findNavController(view).navigate(action);
             }
         });
+
+        binding.layoutFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavDirections action = HomeFragmentDirections.actionNavigationHomeToFilterDialog();
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
     }
 
     @Override
     protected void setupObserver() {
-        mainViewModel.apps.observe(getViewLifecycleOwner(), new Observer<List<App>>() {
+
+        mainViewModel.isGetDataComplete.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (aBoolean && Hawk.get(Const.IS_RETURN_FROM_BACKGROUND, true)) {
+                    viewModel.getApps();
+                }
+            } 
+        });
+
+        viewModel.apps.observe(getViewLifecycleOwner(), new Observer<List<App>>() {
             @Override
             public void onChanged(List<App> apps) {
-                if (apps != null) {
+                if (apps != null && Hawk.get(Const.IS_RETURN_FROM_BACKGROUND, true)) {
                     adapter.setListData(apps);
                     adapter.setTotalUsageTime(viewModel.getTotalUsageTime());
                     binding.recyclerViewApp.setAdapter(adapter);
                     viewModel.getListUsageTimePerHourOfDevice();
                     binding.tvTotalUsageTimeContent.setText(Utils.formatMilliSeconds(viewModel.getTotalUsageTime()));
+
+                    Hawk.put(Const.IS_RETURN_FROM_BACKGROUND, false);
                 }
             }
         });
@@ -88,7 +121,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
             }
         });
         long test = System.currentTimeMillis();
-        mainViewModel.isGetDataComplete.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        viewModel.isSortDataComplete.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {

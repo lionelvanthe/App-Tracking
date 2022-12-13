@@ -62,7 +62,7 @@ public class UsageLimitsViewModel extends BaseViewModel {
         cal2.set(Calendar.SECOND, 59);
         cal2.set(Calendar.MILLISECOND, 99);
 
-        usageTimeRepository.getUsageTimeOfApps(cal.getTimeInMillis(), cal2.getTimeInMillis()).subscribe();
+//        usageTimeRepository.getUsageTimeOfApps(cal.getTimeInMillis(), cal2.getTimeInMillis()).subscribe();
     }
 
     public long getTotalUsageTime() {

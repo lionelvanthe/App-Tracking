@@ -2,21 +2,15 @@ package com.example.apptracking.ui.adapter;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.widget.ProgressBar;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
-import androidx.palette.graphics.Palette;
-
+import com.example.apptracking.AppApplication;
 import com.example.apptracking.R;
 import com.example.apptracking.data.model.App;
 import com.example.apptracking.databinding.ItemAppLayoutBinding;
 import com.example.apptracking.interfaces.ItemClickListener;
 import com.example.apptracking.ui.base.BaseAdapter;
 import com.example.apptracking.utils.Utils;
-
-import java.util.List;
 import java.util.Locale;
 
 public class AppUsageAdapter extends BaseAdapter<App> {
@@ -65,27 +59,13 @@ public class AppUsageAdapter extends BaseAdapter<App> {
             } else {
                 binding.progressBar.setProgress((int) percentUsageTime);
             }
-            setColorForProgressbar(binding.progressBar, data.getPackageName());
+            binding.progressBar.setProgressTintList(ColorStateList.valueOf(AppApplication.getHashMapDomainColor().get(data.getPackageName())));
+
         }
 
         @Override
         public void clickListener(@NonNull App data, @NonNull ItemClickListener<App> itemClickListener) {
 
-        }
-        private void setColorForProgressbar(ProgressBar progressBar, String packageName) {
-
-            Bitmap bitmap = Utils.drawableToBitmap(Utils.getPackageIcon(context, packageName));
-            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                @Override
-                public void onGenerated(Palette palette) {
-                    Palette.Swatch swatch = palette.getVibrantSwatch();
-                    if (swatch != null) {
-                        progressBar.setProgressTintList(ColorStateList.valueOf(swatch.getRgb()));
-                    } else {
-                        progressBar.setProgressTintList(ColorStateList.valueOf(context.getResources().getColor(android.R.color.holo_blue_light)));
-                    }
-                }
-            });
         }
     }
 }

@@ -53,9 +53,6 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment:2.5.3"
     implementation "androidx.navigation:navigation-ui:2.5.3"
 
-    //bar chart
-    implementation 'im.dacer:AndroidCharts:1.0.4'
-
     //Rxjava
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation 'io.reactivex.rxjava3:rxjava:3.0.0'
@@ -67,5 +64,7 @@ dependencies {
 
     //save key-value
     implementation "com.orhanobut:hawk:2.0.1"
+
+    //Floating action button expandable
     implementation 'com.github.imtuann:FloatingActionButtonExpandable:1.1.2'
 }

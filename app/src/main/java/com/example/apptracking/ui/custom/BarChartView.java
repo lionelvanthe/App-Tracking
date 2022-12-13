@@ -122,6 +122,10 @@ public class BarChartView extends View {
     public void setDataList(List<Float> list, int max) {
         if (max == 0) max = 1;
 
+        percentList.clear();
+        targetPercentList.clear();
+        topTextList.clear();
+
         for (Float data : list) {
             if (data > max) {
                 targetPercentList.add(0f);

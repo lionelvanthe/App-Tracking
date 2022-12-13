@@ -15,5 +15,6 @@
     <color name="bg_color_number_picker">#454549</color>
 
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true" >#FFFFFF</color>
+    <color name="bg_spinner">#413E47</color>
 
 </resources>

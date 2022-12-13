@@ -58,9 +58,7 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding, MainV
                 accessPermissionDialog.dismiss();
             }
             binding.getRoot().setVisibility(View.VISIBLE);
-            if (Hawk.get(Const.IS_TODAY, true)) {
-                getUsageTimeOfApps();
-            }
+            getUsageTimeOfApps();
         }
     }
 
@@ -74,31 +72,33 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding, MainV
     }
 
     private void getUsageTimeOfApps() {
-        long startTime = 0;
+        long startTime;
         long endTime = System.currentTimeMillis();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             startTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        } else {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+
+            startTime = calendar.getTimeInMillis();
         }
 
-//        if (startTime <= Hawk.get(Const.TIMESTAMP_GO_TO_BACKGROUND, startTime)) {
-//            startTime = Hawk.get(Const.TIMESTAMP_GO_TO_BACKGROUND, startTime  );
-//        }
-
-        viewModel.getListApp(startTime, endTime);
+        viewModel.getUsageTime(startTime, endTime, true);
     }
 
     @Override
     public void setupData() {
     }
 
-    protected void setStatusBarColor(){
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.color_bg_root));
-    }
-
     @Override
     protected void onStop() {
+        Log.d("Thenv", "onStop: ");
         super.onStop();
-//        Hawk.put(Const.TIMESTAMP_GO_TO_BACKGROUND, System.currentTimeMillis());
+        Hawk.put(Const.IS_RETURN_FROM_BACKGROUND, true);
     }
+
 }

@@ -34,6 +34,12 @@
 
     <string name="name_alarm">Alarm %d</string>
 
+    <string-array name="sort_type">
+        <item>@string/usage_time_largest</item>
+        <item>@string/usage_time_smallest</item>
+        <item>@string/name_a_to_z</item>
+        <item>@string/name_z_to_a</item>
+    </string-array>
 
     <string-array name="warning_type">
         <item>Send Notification</item>
@@ -128,6 +134,7 @@
     <string name="stats">Stats</string>
     <string name="settings">Settings</string>
     <string name="today_s_app_usage" >Today\'s App Usage</string>
+    <string name="sort_type">Sort type</string>
 
 
 </resources>

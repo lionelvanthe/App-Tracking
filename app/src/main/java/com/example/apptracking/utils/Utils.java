@@ -3,14 +3,20 @@ package com.example.apptracking.utils;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 import androidx.core.content.res.ResourcesCompat;
+import androidx.palette.graphics.Palette;
 
+import com.example.apptracking.AppApplication;
 import com.example.apptracking.R;
+import com.example.apptracking.data.model.App;
+
+import java.util.HashMap;
 
 public class Utils {
     public static int dip2px(Context context, float dipValue) {
@@ -87,7 +93,7 @@ public class Utils {
         }
     }
 
-    public static Bitmap drawableToBitmap(Drawable drawable) {
+    private static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap;
 
         if (drawable instanceof BitmapDrawable) {
@@ -107,6 +113,21 @@ public class Utils {
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    public static void getDomainColor(Context context, String packageName) {
+        Bitmap bitmap = Utils.drawableToBitmap(Utils.getPackageIcon(context, packageName));
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+                Palette.Swatch swatch = palette.getVibrantSwatch();
+                if (swatch != null) {
+                    AppApplication.getHashMapDomainColor().put(packageName, swatch.getRgb());
+                } else {
+                    AppApplication.getHashMapDomainColor().put(packageName, context.getResources().getColor(android.R.color.holo_blue_light));
+                }
+            }
+        });
     }
 
 }
