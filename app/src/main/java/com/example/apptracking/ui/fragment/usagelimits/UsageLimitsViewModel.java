@@ -1,6 +1,7 @@
 package com.example.apptracking.ui.fragment.usagelimits;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -15,9 +16,11 @@ import com.example.apptracking.data.repository.AppUsageLimitRepository;
 import com.example.apptracking.data.repository.UsageTimeRepository;
 import com.example.apptracking.ui.base.BaseViewModel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -30,6 +33,9 @@ public class UsageLimitsViewModel extends BaseViewModel {
 
     private MutableLiveData<List<AppUsageLimit>> _appUsageLimits = new MutableLiveData<>();
     public LiveData<List<AppUsageLimit>>  appUsageLimits  = _appUsageLimits;
+
+    private MutableLiveData<List<String>> _packageNames = new MutableLiveData<>();
+    public LiveData<List<String>>  packageNames  = _packageNames;
 
     public LiveData<List<AppUsageLimit>> appUsageLimitsInDatabase;
 
@@ -44,29 +50,58 @@ public class UsageLimitsViewModel extends BaseViewModel {
                 .appUsageLimitDAO();
         appUsageLimitRepository = new AppUsageLimitRepository(dao);
         appUsageLimitsInDatabase = appUsageLimitRepository.getAppUsageLimits();
+
+        getPackageNames();
     }
 
-    public void getUsageTimeToday() {
-        long timeNow = System.currentTimeMillis();
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(timeNow);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
 
-        Calendar cal2 = Calendar.getInstance();
-        cal2.setTimeInMillis(timeNow);
-        cal2.set(Calendar.HOUR_OF_DAY, 23);
-        cal2.set(Calendar.MINUTE, 59);
-        cal2.set(Calendar.SECOND, 59);
-        cal2.set(Calendar.MILLISECOND, 99);
+    public void getPackageNames() {
+        appUsageLimitRepository.getPackageNames().subscribe(new SingleObserver<List<String>>() {
+            @Override
+            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
 
-//        usageTimeRepository.getUsageTimeOfApps(cal.getTimeInMillis(), cal2.getTimeInMillis()).subscribe();
+            @Override
+            public void onSuccess(@io.reactivex.rxjava3.annotations.NonNull List<String> strings) {
+                _packageNames.postValue(strings);
+            }
+
+            @Override
+            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                _packageNames.postValue(new ArrayList<>());
+            }
+        });
+    }
+
+    public void updateUsageTimeOfDay(long usageTime, String packageName) {
+
+        appUsageLimitRepository.updateUsageTimeOfDay(usageTime, packageName).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {}
+
+            @Override
+            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+
+            }
+        });
     }
 
     public long getTotalUsageTime() {
         return usageTimeRepository.getTotalUsageTime();
+    }
+
+    public long geUsageTimeFollowPackageName(String packageName) {
+        return usageTimeRepository.geUsageTimeFollowPackageName(packageName);
+    }
+
+    public Float[] getUsageTimePerHourFollowPackageName(String packageName) {
+        return usageTimeRepository.getUsageTimePerHourFollowPackageName(packageName);
     }
 
     public void getAppUsageTimeLimit() {
@@ -94,10 +129,6 @@ public class UsageLimitsViewModel extends BaseViewModel {
 
     public void deleteAppUsageLimit(AppUsageLimit appUsageLimit) {
         appUsageLimitRepository.deleteAppUsageLimit(appUsageLimit);
-    }
-
-    public void deleteAllAppUsageLimit() {
-        appUsageLimitRepository.deleteAllAppUsageLimit();
     }
 
 }

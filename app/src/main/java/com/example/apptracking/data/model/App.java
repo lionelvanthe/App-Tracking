@@ -6,19 +6,21 @@ import androidx.room.PrimaryKey;
 
 import com.example.apptracking.utils.Const;
 
-public class App {
+import java.io.Serializable;
+
+public class App implements Serializable {
     @PrimaryKey
     @NonNull
     protected String name;
     protected String packageName;
     protected long usageTimeOfDay;
     @Ignore
-    protected float[] usageTimePerHour;
+    protected Float[] usageTimePerHour;
 
     public App(@NonNull String name, String packageName) {
         this.name = name;
         this.packageName = packageName;
-        usageTimePerHour = new float[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        usageTimePerHour = new Float[]{0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F};
         usageTimeOfDay = 0;
     }
 
@@ -43,11 +45,11 @@ public class App {
     }
 
 
-    public float[] getUsageTimePerHour() {
+    public Float[] getUsageTimePerHour() {
         return usageTimePerHour;
     }
 
-    public void setUsageTimePerHour(float[] usageTimePerHour) {
+    public void setUsageTimePerHour(Float[] usageTimePerHour) {
         this.usageTimePerHour = usageTimePerHour;
     }
 

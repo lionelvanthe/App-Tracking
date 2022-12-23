@@ -38,10 +38,10 @@ public class MainViewModel extends BaseViewModel {
         repository = new UsageTimeRepository(usageTime);
     }
 
-    public void getUsageTime(long startTime, long endTime, boolean isToday) {
+    public void getUsageTime(long startTime, long endTime) {
 
         _isGetDataComplete.postValue(false);
-        repository.getUsageTime(startTime, endTime, isToday).subscribe(new CompletableObserver() {
+        repository.getUsageTime(startTime, endTime).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
                 compositeDisposable.add(d);

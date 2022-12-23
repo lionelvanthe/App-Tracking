@@ -16,6 +16,7 @@ import com.example.apptracking.databinding.ActivityMainBinding;
 import com.example.apptracking.ui.base.BaseBindingActivity;
 import com.example.apptracking.ui.dialog.UsageAccessPermissionDialog;
 import com.example.apptracking.utils.Const;
+import com.example.apptracking.utils.Utils;
 import com.orhanobut.hawk.Hawk;
 
 import java.time.LocalDate;
@@ -53,6 +54,14 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding, MainV
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("Thenv", "onStart: ");
+        if (Hawk.get(Const.IS_TODAY)) {
+            Hawk.put(Const.IS_LOAD_DATA, true);
+
+        } else {
+            Hawk.put(Const.IS_LOAD_DATA, false);
+
+        }
         if (isPermissionGranted()) {
             if (accessPermissionDialog != null) {
                 accessPermissionDialog.dismiss();
@@ -72,33 +81,14 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding, MainV
     }
 
     private void getUsageTimeOfApps() {
-        long startTime;
         long endTime = System.currentTimeMillis();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            startTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
-        } else {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
+        Log.d("Thenv", "getUsageTimeOfApps current time: " + endTime);
 
-            startTime = calendar.getTimeInMillis();
-        }
-
-        viewModel.getUsageTime(startTime, endTime, true);
+        viewModel.getUsageTime(Utils.getStartTimeOfToday(), endTime);
     }
 
     @Override
     public void setupData() {
-    }
-
-    @Override
-    protected void onStop() {
-        Log.d("Thenv", "onStop: ");
-        super.onStop();
-        Hawk.put(Const.IS_RETURN_FROM_BACKGROUND, true);
     }
 
 }

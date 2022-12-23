@@ -1,7 +1,10 @@
 package com.example.apptracking;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 import com.example.apptracking.utils.Const;
 import com.example.apptracking.utils.Utils;
@@ -18,18 +21,9 @@ public class AppApplication extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         Hawk.init(getApplicationContext()).build();
-
-        Hawk.put(Const.IS_RETURN_FROM_BACKGROUND, true);
         Hawk.put(Const.IS_TODAY, true);
         initHashMap();
-    }
-
-    public static HashMap<String, Boolean> getHashMapAppOpenableAndInstalled() {
-        return hashMapAppOpenableAndInstalled;
-    }
-
-    public static HashMap<String, Integer> getHashMapDomainColor() {
-        return hashMapDomainColor;
+        createNotificationChannel();
     }
 
     private void initHashMap() {
@@ -46,6 +40,15 @@ public class AppApplication extends android.app.Application {
         }
     }
 
+    private void createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build. VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel(Const.CHANNEL_ID, "Channel app tracking", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setSound(null, null);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+    }
+
     public static AppApplication getInstance()
     {
         if (instance== null) {
@@ -55,5 +58,13 @@ public class AppApplication extends android.app.Application {
             }
         }
         return instance;
+    }
+
+    public static HashMap<String, Boolean> getHashMapAppOpenableAndInstalled() {
+        return hashMapAppOpenableAndInstalled;
+    }
+
+    public static HashMap<String, Integer> getHashMapDomainColor() {
+        return hashMapDomainColor;
     }
 }

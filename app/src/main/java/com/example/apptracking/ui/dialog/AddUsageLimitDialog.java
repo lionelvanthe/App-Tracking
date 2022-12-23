@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.apptracking.R;
+import com.example.apptracking.broadcastreceiver.AlarmReceiver;
 import com.example.apptracking.data.model.AppUsageLimit;
 import com.example.apptracking.databinding.DialogAddUsageLimitBinding;
 import com.example.apptracking.databinding.MenuSpinnerAppBinding;
@@ -24,9 +25,13 @@ import com.example.apptracking.ui.base.BaseBindingDialogFragment;
 import com.example.apptracking.ui.fragment.usagelimits.UsageLimitsViewModel;
 import com.example.apptracking.utils.Const;
 import com.example.apptracking.utils.Utils;
+import com.orhanobut.hawk.Hawk;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsageLimitBinding> {
 
@@ -110,6 +115,9 @@ public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsag
             public void onClick(View v) {
                 dismiss();
                 updateDatabase();
+                if (Hawk.get(appUsageLimit.getPackageName()) == null) {
+                    Hawk.put(appUsageLimit.getPackageName(), appUsageLimit.getUsageTimePerHour());
+                }
                 setUsageTimeLimit();
             }
         });
@@ -125,6 +133,8 @@ public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsag
             @Override
             public void onClick(View v) {
                 viewModel.deleteAppUsageLimit(appUsageLimit);
+                Hawk.delete(appUsageLimit.getPackageName());
+                appUsageLimit.cancel(requireContext(), (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE), AlarmReceiver.class);
                 dismiss();
             }
         });
@@ -132,6 +142,9 @@ public class AddUsageLimitDialog extends BaseBindingDialogFragment<DialogAddUsag
 
     private void setUsageTimeLimit() {
         AlarmManager manager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
+//        List<String> packageNameAppUsageTimeLimits = Hawk.get(Const.LIST_PACKAGE_NAME_APP_USAGE_TIME_LIMIT, new ArrayList<>());
+//        packageNameAppUsageTimeLimits.add(appUsageLimit.getPackageName());
+//        Hawk.put(Const.LIST_PACKAGE_NAME_APP_USAGE_TIME_LIMIT, packageNameAppUsageTimeLimits);
         appUsageLimit.setAlarm(requireContext(), manager);
     }
 

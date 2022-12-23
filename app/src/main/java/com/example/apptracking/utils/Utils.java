@@ -16,6 +16,9 @@ import com.example.apptracking.AppApplication;
 import com.example.apptracking.R;
 import com.example.apptracking.data.model.App;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class Utils {
@@ -93,7 +96,7 @@ public class Utils {
         }
     }
 
-    private static Bitmap drawableToBitmap(Drawable drawable) {
+    public static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap;
 
         if (drawable instanceof BitmapDrawable) {
@@ -128,6 +131,24 @@ public class Utils {
                 }
             }
         });
+    }
+
+    public static long getStartTimeOfToday() {
+        long startTime;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            startTime = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        } else {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+
+            startTime = calendar.getTimeInMillis();
+        }
+
+        return startTime;
     }
 
 }

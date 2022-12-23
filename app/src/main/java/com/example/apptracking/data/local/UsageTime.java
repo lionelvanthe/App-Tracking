@@ -4,19 +4,13 @@ import android.app.usage.UsageEvents;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.util.Log;
-
 import com.example.apptracking.AppApplication;
 import com.example.apptracking.data.model.App;
-import com.example.apptracking.ui.dialog.FilterDialog;
 import com.example.apptracking.utils.Const;
 import com.example.apptracking.utils.Utils;
 import com.orhanobut.hawk.Hawk;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +32,7 @@ public class UsageTime {
     private long totalUsageTimeInToday = 0;
     private long totalUsageTime = 0;
 
-    public HashMap<String, App> getMapApp() {
+    public HashMap<String, App> getMapAppInToday() {
         return mapAppInToDay;
     }
 
@@ -89,32 +83,36 @@ public class UsageTime {
         }
     }
 
-    public void getUsageTime(long startTime, long endTime, boolean isToday) {
-        mapAppInToDay.clear();
-        mapApp.clear();
+    public void getUsageTime(long startTime, long endTime) {
+
         mapEvents.clear();
-        hashMapUsageTimePerHourOfDeviceInToday.clear();
-        hashMapUsageTimePerHourOfDevice.clear();
-        totalUsageTimeInToday = 0;
-        totalUsageTime = 0;
-        initHashMap(startTime, endTime);
-        calculateUsageTime();
+        if (Hawk.get(Const.IS_TODAY)) {
+            mapAppInToDay.clear();
+            hashMapUsageTimePerHourOfDeviceInToday.clear();
+            totalUsageTimeInToday = 0;
+            initHashMap(startTime, endTime, mapAppInToDay);
+            calculateUsageTime(endTime, mapAppInToDay, true, hashMapUsageTimePerHourOfDeviceInToday);
 
-        Log.d("Thenv", "getUsageTime: " + mapAppInToDay.size());
-
-        if (!isToday) {
-            totalUsageTime = totalUsageTimeInToday;
-            hashMapUsageTimePerHourOfDevice.putAll(hashMapUsageTimePerHourOfDeviceInToday);
-            mapApp.putAll(mapAppInToDay);
+        } else {
+            mapApp.clear();
+            hashMapUsageTimePerHourOfDevice.clear();
+            totalUsageTime = 0;
+            initHashMap(startTime, endTime, mapApp);
+            calculateUsageTime(endTime, mapApp, false, hashMapUsageTimePerHourOfDevice);
         }
     }
-//
-//    public long geUsageTimeFollowPackageName(String packageName) {
-//        App app = mapApp.get(packageName);
-//        return app.getUsageTimeOfDay();
-//    }
 
-    private void initHashMap(long startTime, long endTime) {
+    public long geUsageTimeFollowPackageName(String packageName) {
+        App app = mapAppInToDay.get(packageName);
+        return app.getUsageTimeOfDay();
+    }
+
+    public Float[] getUsageTimePerHourFollowPackageName(String packageName) {
+        App app = mapAppInToDay.get(packageName);
+        return app.getUsageTimePerHour();
+    }
+
+    private void initHashMap(long startTime, long endTime, HashMap<String, App> appHashMap) {
         UsageEvents.Event currentEvent;
         if (mUsageStatsManager != null) {
             UsageEvents usageEvents = mUsageStatsManager.queryEvents(startTime, endTime);
@@ -124,8 +122,8 @@ public class UsageTime {
                 String key = currentEvent.getPackageName();
                 if (AppApplication.getHashMapAppOpenableAndInstalled().get(key) != null) {
                     if (currentEvent.getEventType() == 1 || currentEvent.getEventType() == 2 || currentEvent.getEventType() == 23) {
-                        if (mapAppInToDay.get(key) == null) {
-                            mapAppInToDay.put(key, new App(Utils.parsePackageName(context.getPackageManager(), key), key));
+                        if (appHashMap.get(key) == null) {
+                            appHashMap.put(key, new App(Utils.parsePackageName(context.getPackageManager(), key), key));
                         }
                         if (mapEvents.get(key) == null) {
                             mapEvents.put(key, new ArrayList<>());
@@ -137,7 +135,7 @@ public class UsageTime {
         }
     }
 
-    private void calculateUsageTime() {
+    private void calculateUsageTime(long endTime, HashMap<String, App> appHashMap, boolean isToday, HashMap<Integer, Float> timeHashMap) {
         Calendar calendar = Calendar.getInstance();
         Calendar calendar2= Calendar.getInstance();
 
@@ -165,35 +163,48 @@ public class UsageTime {
 
                     if (E2.getEventType() == 1) {
                         diff = E1.getTimeStamp() - E0.getTimeStamp();
-                        mapAppInToDay.get(entry.getKey()).addUsageTimePerHour(hour, (float) diff / (float) Const.A_MINUS);
-                        addValueToHashMap(hour, (float) diff / (float) Const.A_MINUS);
+                        appHashMap.get(entry.getKey()).addUsageTimePerHour(hour, (float) diff / (float) Const.A_MINUS);
+                        addValueToHashMap(hour, (float) diff / (float) Const.A_MINUS, timeHashMap);
                     } else {
                         diff = E2.getTimeStamp() - E0.getTimeStamp();
 
                         if (hour != hour2) {
-                            mapAppInToDay.get(entry.getKey()).addUsageTimePerHour(hour, (60 - calendar.get(Calendar.MINUTE)));
-                            mapAppInToDay.get(entry.getKey()).addUsageTimePerHour(hour2, calendar2.get(Calendar.MINUTE) );
+                            appHashMap.get(entry.getKey()).addUsageTimePerHour(hour, (60 - calendar.get(Calendar.MINUTE)));
+                            appHashMap.get(entry.getKey()).addUsageTimePerHour(hour2, calendar2.get(Calendar.MINUTE) );
 
-                            addValueToHashMap(hour, (float) (60 - calendar.get(Calendar.MINUTE)));
-                            addValueToHashMap(hour2, (float) calendar2.get(Calendar.MINUTE));
+                            addValueToHashMap(hour, (float) (60 - calendar.get(Calendar.MINUTE)), timeHashMap);
+                            addValueToHashMap(hour2, (float) calendar2.get(Calendar.MINUTE), timeHashMap);
                         } else {
-                            mapAppInToDay.get(entry.getKey()).addUsageTimePerHour(hour, (float) diff / (float) Const.A_MINUS);
-                            addValueToHashMap(hour, (float) diff / (float) Const.A_MINUS);
+                            appHashMap.get(entry.getKey()).addUsageTimePerHour(hour, (float) diff / (float) Const.A_MINUS);
+                            addValueToHashMap(hour, (float) diff / (float) Const.A_MINUS, timeHashMap);
                         }
                     }
                     timeInForeground += diff;
                 }
             }
-            totalUsageTimeInToday += timeInForeground;
-            mapAppInToDay.get(entry.getKey()).setUsageTimeOfDay(timeInForeground);
+
+            if (entry.getKey().equals("com.facebook.katana")) {
+//                Log.d("Thenv", "calculateUsageTime: " + entry.getValue().get(totalEvents - 1).getEventType() + " , " + entry.getValue().get(totalEvents - 1).getTimeStamp());
+            }
+
+            if (entry.getValue().get(totalEvents - 1).getEventType() == 1) {
+                long diff = endTime - entry.getValue().get(totalEvents - 1).getTimeStamp();
+                timeInForeground += diff;
+            }
+            if (isToday) {
+                totalUsageTimeInToday += timeInForeground;
+            } else {
+                totalUsageTime += timeInForeground;
+            }
+            appHashMap.get(entry.getKey()).setUsageTimeOfDay(timeInForeground);
         }
     }
 
-    private void addValueToHashMap(int key, float value) {
-        if (hashMapUsageTimePerHourOfDeviceInToday.get(key) == null) {
-            hashMapUsageTimePerHourOfDeviceInToday.put(key, value);
+    private void addValueToHashMap(int key, float value, HashMap<Integer, Float> hashMap) {
+        if (hashMap.get(key) == null) {
+            hashMap.put(key, value);
         } else {
-            hashMapUsageTimePerHourOfDeviceInToday.put(key, hashMapUsageTimePerHourOfDeviceInToday.get(key) + value);
+            hashMap.put(key, hashMap.get(key) + value);
         }
     }
 }

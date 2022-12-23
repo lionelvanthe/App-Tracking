@@ -30,8 +30,8 @@ public class UsageTimeRepository {
         this.usageTime = usageTime;
     }
 
-    public Completable getUsageTime(long startTime, long endTime, boolean isToday) {
-        return Completable.fromRunnable(() -> usageTime.getUsageTime(startTime, endTime, isToday))
+    public Completable getUsageTime(long startTime, long endTime) {
+        return Completable.fromRunnable(() -> usageTime.getUsageTime(startTime, endTime))
                 .subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
     }
 
@@ -73,7 +73,7 @@ public class UsageTimeRepository {
         final PackageManager pm = application.getPackageManager();
         List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
-        HashMap<String, App> mapApp = getMapApp();
+        HashMap<String, App> mapApp = getMapAppInToday();
         for (ApplicationInfo packageInfo : packages) {
             if (!Utils.isSystemApp(application.getPackageManager(), packageInfo.packageName)) {
                 AppUsageLimit appUsageLimit;
@@ -84,6 +84,7 @@ public class UsageTimeRepository {
                     App app =  mapApp.get(packageInfo.packageName);
                     appUsageLimit = new AppUsageLimit(app.getName(), packageInfo.packageName);
                     appUsageLimit.setUsageTimeOfDay(app.getUsageTimeOfDay());
+                    appUsageLimit.setUsageTimePerHour(app.getUsageTimePerHour());
                 }
                 appUsageLimits.add(appUsageLimit);
             }
@@ -91,7 +92,15 @@ public class UsageTimeRepository {
         return appUsageLimits;
     }
 
-    public HashMap<String, App> getMapApp() {
-        return usageTime.getMapApp();
+    public HashMap<String, App> getMapAppInToday() {
+        return usageTime.getMapAppInToday();
+    }
+
+    public long geUsageTimeFollowPackageName(String packageName) {
+        return usageTime.geUsageTimeFollowPackageName(packageName);
+    }
+
+    public Float[] getUsageTimePerHourFollowPackageName(String packageName) {
+        return usageTime.getUsageTimePerHourFollowPackageName(packageName);
     }
 }

@@ -1,25 +1,25 @@
 package com.example.apptracking.ui.fragment.usagelimits;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.apptracking.R;
-import com.example.apptracking.data.local.UsageTime;
 import com.example.apptracking.data.model.AppUsageLimit;
 import com.example.apptracking.databinding.FragmentUsageLimitsBinding;
 import com.example.apptracking.interfaces.ItemClickListener;
 import com.example.apptracking.ui.adapter.AppUsageLimitAdapter;
 import com.example.apptracking.ui.base.BaseBindingFragment;
-import com.example.apptracking.ui.dialog.AddUsageLimitDialog;
-import com.example.apptracking.ui.dialog.UsageAccessPermissionDialog;
-import com.example.apptracking.ui.fragment.home.HomeFragmentDirections;
+import com.example.apptracking.ui.dialog.AlertDialog;
+import com.example.apptracking.utils.Const;
+import com.orhanobut.hawk.Hawk;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class UsageLimitsFragment extends BaseBindingFragment<FragmentUsageLimits
 
     @Override
     protected void onCreatedView(View view, Bundle savedInstanceState) {
-//        viewModel.getUsageTimeToday();
+
         adapter = new AppUsageLimitAdapter(requireContext(), R.layout.item_app_usage_limit_layout, new ItemClickListener<AppUsageLimit>() {
             @Override
             public void onClickListener(AppUsageLimit model) {
@@ -67,28 +67,50 @@ public class UsageLimitsFragment extends BaseBindingFragment<FragmentUsageLimits
         binding.fabAddUsageLimit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavDirections action = UsageLimitsFragmentDirections.actionNavigationUsageLimitsToAddUsageLimitDialog(null);
-                Navigation.findNavController(v).navigate(action);
+                if (Build.VERSION.SDK_INT >= 23 && !Hawk.get(Const.INFO_BACKGROUND_PERMISSIONS, false)) {
+                    AlertDialog alert = new AlertDialog(requireContext());
+                    alert.setTitle(getString(R.string.info_background_permissions_title));
+                    alert.setContent(getString(R.string.info_background_permissions_body));
+                    alert.setListener((dialog, ok) -> {
+                        if (ok) {
+                            Hawk.put(Const.INFO_BACKGROUND_PERMISSIONS, true);
+                            startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION));
+                        }
+                    });
+                    alert.show();
+                } else {
+                    NavDirections action = UsageLimitsFragmentDirections.actionNavigationUsageLimitsToAddUsageLimitDialog(null);
+                    Navigation.findNavController(v).navigate(action);
+                }
             }
         });
 
         binding.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.deleteAllAppUsageLimit();
             }
         });
     }
 
     @Override
     protected void setupObserver() {
+
+        viewModel.packageNames.observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                if (strings != null) {
+                    for (String packageName: strings) {
+                        Hawk.put(packageName, viewModel.getUsageTimePerHourFollowPackageName(packageName));
+                        viewModel.updateUsageTimeOfDay(viewModel.geUsageTimeFollowPackageName(packageName), packageName);
+                    }
+                }
+            }
+        });
+
         viewModel.appUsageLimitsInDatabase.observe(getViewLifecycleOwner(), new Observer<List<AppUsageLimit>>() {
             @Override
             public void onChanged(List<AppUsageLimit> appUsageLimits) {
                 if (appUsageLimits != null) {
-                    for (AppUsageLimit a: appUsageLimits) {
-//                        Log.d("Thenv", "onChanged: "+UsageTime.getInstance(requireContext()).geUsageTimeFollowPackageName(a.getPackageName()));
-                    }
                     adapter.setListData(appUsageLimits);
                     binding.recyclerVieAppUsageLimit.setAdapter(adapter);
                 }

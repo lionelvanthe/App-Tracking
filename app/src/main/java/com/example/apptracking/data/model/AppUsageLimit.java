@@ -3,14 +3,25 @@ package com.example.apptracking.data.model;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import com.example.apptracking.broadcastreceiver.AlarmReceiver;
+import com.example.apptracking.broadcastreceiver.CheckAppLimitIsRunningReceiver;
 import com.example.apptracking.ui.activity.main.MainActivity;
+import com.example.apptracking.utils.Const;
+import com.orhanobut.hawk.Hawk;
+
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity(tableName = "appUsageLimit")
 public class AppUsageLimit extends App implements Serializable {
@@ -57,59 +68,38 @@ public class AppUsageLimit extends App implements Serializable {
         this.usageTimeOfDay = usageTimeOfDay;
     }
 
-
-    public void setTime(Context context, AlarmManager manager, long timeMillis) {
-        this.usageTimeLimit = timeMillis;
-        //set(context, manager);
-    }
-
-//    @Nullable
-//    public Calendar getNext() {
-//        Calendar next = Calendar.getInstance();
-//        next.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
-//        next.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
-//        next.set(Calendar.SECOND, 0);
-//
-//        return next;
-//
-//    }
-//
-//    public void set(Context context, AlarmManager manager) {
-//        Calendar nextTime = getNext();
-//        if (nextTime != null) {
-//            setAlarm(context, manager, nextTime.getTimeInMillis());
-//            return nextTime.getTime();
-//        } else {
-//           return time.getTime();
-//        }
-//    }
-
     public void setAlarm(Context context, AlarmManager manager) {
-        manager.setAlarmClock(
-                new AlarmManager.AlarmClockInfo(
-                        Calendar.getInstance().getTimeInMillis() + this.usageTimeLimit - this.usageTimeOfDay,
-                        PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0)
-                ),
-                getIntent(context)
+
+        manager.set(AlarmManager.RTC_WAKEUP,
+                Calendar.getInstance().getTimeInMillis() + this.usageTimeLimit - this.usageTimeOfDay,
+                getIntent(context, AlarmReceiver.class));
+    }
+
+    public void cancel(Context context, AlarmManager manager, Class<?> receiver) {
+        manager.cancel(getIntent(context, receiver));
+    }
+
+    public void setAlarmCheckAppLimitIsRunning(Context context, AlarmManager manager) {
+
+        long currentTime  = System.currentTimeMillis();
+        manager.set(
+                AlarmManager.RTC_WAKEUP,
+                currentTime + 3000,
+                getIntent(context, CheckAppLimitIsRunningReceiver.class)
         );
-
-//        manager.set(AlarmManager.RTC_WAKEUP,
-//                timeMillis - (long) PreferenceData.SLEEP_REMINDER_TIME.getValue(context),
-//                PendingIntent.getService(context, 0, new Intent(context, SleepReminderService.class), 0));
-//
-//        SleepReminderService.refreshSleepTime(context);
     }
 
-    public void cancel(Context context, AlarmManager manager) {
-        manager.cancel(getIntent(context));
+    private PendingIntent getIntent(Context context, Class<?> receiver) {
+        Intent intent = new Intent(context, receiver);
+        Bundle args = new Bundle();
+        args.putSerializable(Const.APP_USAGE_TIME_LIMIT, this);
+        intent.putExtra(Const.EXTRA_APP_USAGE_TIME_LIMIT,args);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return PendingIntent.getBroadcast(context, this.name.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            return PendingIntent.getBroadcast(context, this.name.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-    }
-
-    private PendingIntent getIntent(Context context) {
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        intent.putExtra(AlarmReceiver.EXTRA_ALARM_ID, this);
-//        intent.putExtra(AlarmReceiver.EXTRA_ALARM_ID, this.name);
-        return PendingIntent.getBroadcast(context, this.name.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
     }
 
 }

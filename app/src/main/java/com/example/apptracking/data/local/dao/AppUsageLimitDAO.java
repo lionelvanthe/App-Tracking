@@ -20,9 +20,13 @@ public interface AppUsageLimitDAO {
     @Query("SELECT * FROM appUsageLimit")
     LiveData<List<AppUsageLimit>> getAppUsageLimits();
 
+    @Query("SELECT packageName FROM appUsageLimit")
+    List<String> getPackageNames();
+
+    @Query("UPDATE appUsageLimit SET usageTimeOfDay = :usageTime WHERE packageName = :packageName")
+    void updateUsageTimeOfDay(long usageTime, String packageName);
+
     @Delete
     void deleteAppUsageLimit(AppUsageLimit appUsageLimit);
 
-    @Query("DELETE FROM appUsageLimit")
-    void deleteAllAppUsageLimit();
 }

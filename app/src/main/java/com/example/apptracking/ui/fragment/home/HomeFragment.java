@@ -55,8 +55,12 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
         getParentFragmentManager().setFragmentResultListener(Const.FILTER_KEY, this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                mainViewModel.getUsageTime(bundle.getLong(Const.START_TIME), bundle.getLong(Const.END_TIME), false);
-                Hawk.put(Const.IS_RETURN_FROM_BACKGROUND, true);
+                if (Hawk.get(Const.IS_TODAY)) {
+                    viewModel.getApps();
+                } else {
+                    mainViewModel.getUsageTime(bundle.getLong(Const.START_TIME), bundle.getLong(Const.END_TIME));
+                }
+                Hawk.put(Const.IS_LOAD_DATA, true);
             }
         });
 
@@ -92,7 +96,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
         mainViewModel.isGetDataComplete.observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                if (aBoolean && Hawk.get(Const.IS_RETURN_FROM_BACKGROUND, true)) {
+                if (aBoolean && Hawk.get(Const.IS_LOAD_DATA, true)) {
                     viewModel.getApps();
                 }
             } 
@@ -101,14 +105,14 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
         viewModel.apps.observe(getViewLifecycleOwner(), new Observer<List<App>>() {
             @Override
             public void onChanged(List<App> apps) {
-                if (apps != null && Hawk.get(Const.IS_RETURN_FROM_BACKGROUND, true)) {
+                if (apps != null && Hawk.get(Const.IS_LOAD_DATA, true)) {
                     adapter.setListData(apps);
+                    Log.d("Thenv", "onChanged: adfadfasdfasdfasdfasf");
                     adapter.setTotalUsageTime(viewModel.getTotalUsageTime());
                     binding.recyclerViewApp.setAdapter(adapter);
                     viewModel.getListUsageTimePerHourOfDevice();
                     binding.tvTotalUsageTimeContent.setText(Utils.formatMilliSeconds(viewModel.getTotalUsageTime()));
-
-                    Hawk.put(Const.IS_RETURN_FROM_BACKGROUND, false);
+                    Hawk.put(Const.IS_LOAD_DATA, false);
                 }
             }
         });
@@ -127,7 +131,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
                 if (aBoolean) {
                     binding.progress.setVisibility(View.GONE);
                     binding.recyclerViewApp.setVisibility(View.VISIBLE);
-                    Log.d("Thenv", "onChanged time: " + (System.currentTimeMillis() - test));
+//                    Log.d("Thenv", "onChanged time: " + (System.currentTimeMillis() - test));
                 } else {
                     binding.progress.setVisibility(View.VISIBLE);
                     binding.recyclerViewApp.setVisibility(View.GONE);

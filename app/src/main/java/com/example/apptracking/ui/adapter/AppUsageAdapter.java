@@ -59,7 +59,13 @@ public class AppUsageAdapter extends BaseAdapter<App> {
             } else {
                 binding.progressBar.setProgress((int) percentUsageTime);
             }
-            binding.progressBar.setProgressTintList(ColorStateList.valueOf(AppApplication.getHashMapDomainColor().get(data.getPackageName())));
+
+            if (AppApplication.getHashMapDomainColor().get(data.getPackageName()) == null) {
+                binding.progressBar.setProgressTintList(ColorStateList.valueOf(context.getResources().getColor(android.R.color.holo_blue_light)));
+            } else {
+                binding.progressBar.setProgressTintList(ColorStateList.valueOf(AppApplication.getHashMapDomainColor().get(data.getPackageName())));
+
+            }
 
         }
 

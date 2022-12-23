@@ -31,8 +31,12 @@
     <string name="save">SAVE</string>
     <string name="total_usage_in_limit">Total Usage</string>
     <string name="limit_reached">Limit reached</string>
+    <string name="sub_text_notification">Click to open AppTracking!</string>
+    <string name="usage_limit_is_exceeded">Usage limit is exceeded!</string>
+    <string name="content_text_notification">%s Time limit: %s</string>
 
-    <string name="name_alarm">Alarm %d</string>
+    <string name="info_background_permissions_title">System Alerts / Background Permissions</string>
+    <string name="info_background_permissions_body">Newer versions of Android are becoming increasingly unreliable at starting apps from the background without user interaction; with the introduction of Doze/App Standby in Android 6.0, the requirements for an app to be started are ambiguous and often device-specific.\n\nAs such, while it is not always a requirement for this app to function, it is highly recommended that you grant the System Overlays permission on the next page. This will grant Alarmio an exemption from Android\'s usual requirements for starting an app without user interaction, and allow it to function much more reliably.</string>
 
     <string-array name="sort_type">
         <item>@string/usage_time_largest</item>
@@ -135,6 +139,10 @@
     <string name="settings">Settings</string>
     <string name="today_s_app_usage" >Today\'s App Usage</string>
     <string name="sort_type">Sort type</string>
+    <string name="this_application_has_been_blocked_for_today">This application has been blocked for today.</string>
+    <string name="usage_limit">Usage Limit:</string>
+    <string name="today_s_usage">Today\'s usage:</string>
+    <string name="dismiss_block">Dismiss block</string>
 
 
 </resources>
