@@ -16,9 +16,12 @@ import com.example.apptracking.AppApplication;
 import com.example.apptracking.R;
 import com.example.apptracking.data.model.App;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Utils {
@@ -151,4 +154,13 @@ public class Utils {
         return startTime;
     }
 
+    public static String converterTimestampToDate(long timestamp) {
+        DateFormat dateFormat  = new SimpleDateFormat("dd/MM/yyyy");
+        // we create instance of the Date and pass milliseconds to the constructor
+        // we create instance of the Date and pass milliseconds to the constructor
+        Date date = new Date(timestamp);
+        // now we format the res by using SimpleDateFormat
+        // now we format the res by using SimpleDateFormat
+        return dateFormat.format(date);
+    }
 }

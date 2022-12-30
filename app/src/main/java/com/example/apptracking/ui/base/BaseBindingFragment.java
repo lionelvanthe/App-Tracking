@@ -22,7 +22,7 @@ abstract public class BaseBindingFragment<B extends ViewDataBinding, VM extends 
 
     abstract protected void onCreatedView(View view, Bundle savedInstanceState);
 
-    abstract protected void setupLister();
+    abstract protected void setupListener();
 
     abstract protected void setupObserver();
 
@@ -44,7 +44,7 @@ abstract public class BaseBindingFragment<B extends ViewDataBinding, VM extends 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         onCreatedView(view, savedInstanceState);
-        setupLister();
+        setupListener();
         setupObserver();
     }
 

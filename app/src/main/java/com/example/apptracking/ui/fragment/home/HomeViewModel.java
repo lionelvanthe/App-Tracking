@@ -93,7 +93,6 @@ public class HomeViewModel extends BaseViewModel {
 
     private void sortData(List<App> apps) {
         int currentSortType = Hawk.get(Const.SORT_TYPE, 0);
-
         if (currentSortType == 0) {
             Collections.sort(apps, (o1, o2) -> Long.compare(o2.getUsageTimeOfDay(), o1.getUsageTimeOfDay()));
         } else if (currentSortType == 1) {

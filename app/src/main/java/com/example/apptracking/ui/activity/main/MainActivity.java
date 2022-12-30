@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.ui.NavigationUI;
 import com.example.apptracking.R;
+import com.example.apptracking.data.local.UsageTime;
 import com.example.apptracking.databinding.ActivityMainBinding;
 import com.example.apptracking.ui.base.BaseBindingActivity;
 import com.example.apptracking.ui.dialog.UsageAccessPermissionDialog;
@@ -82,9 +83,9 @@ public class MainActivity extends BaseBindingActivity<ActivityMainBinding, MainV
 
     private void getUsageTimeOfApps() {
         long endTime = System.currentTimeMillis();
-        Log.d("Thenv", "getUsageTimeOfApps current time: " + endTime);
 
         viewModel.getUsageTime(Utils.getStartTimeOfToday(), endTime);
+
     }
 
     @Override

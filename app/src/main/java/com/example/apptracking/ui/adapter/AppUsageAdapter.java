@@ -2,6 +2,8 @@ package com.example.apptracking.ui.adapter;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import com.example.apptracking.AppApplication;
@@ -71,7 +73,12 @@ public class AppUsageAdapter extends BaseAdapter<App> {
 
         @Override
         public void clickListener(@NonNull App data, @NonNull ItemClickListener<App> itemClickListener) {
-
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClickListener.onClickListener(data);
+                }
+            });
         }
     }
 }

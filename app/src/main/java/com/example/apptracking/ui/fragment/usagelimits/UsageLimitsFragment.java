@@ -63,7 +63,7 @@ public class UsageLimitsFragment extends BaseBindingFragment<FragmentUsageLimits
     }
 
     @Override
-    protected void setupLister() {
+    protected void setupListener() {
         binding.fabAddUsageLimit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

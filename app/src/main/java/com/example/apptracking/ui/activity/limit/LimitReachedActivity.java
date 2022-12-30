@@ -49,7 +49,7 @@ public class LimitReachedActivity extends BaseBindingActivity<ActivityLimitReach
         binding.imgIconApp.setBackground(Utils.getPackageIcon(this, appUsageLimit.getPackageName()));
         binding.tvAppName.setText(appUsageLimit.getName());
         binding.tvUsageLimitContent.setText(Utils.formatMilliSeconds(appUsageLimit.getUsageTimeLimit()));
-        binding.tvTodayUsageContent.setText(Utils.formatMilliSeconds(appUsageLimit.getUsageTimeOfDay()));
+        binding.tvTodayUsageContent.setText(Utils.formatMilliSeconds(appUsageLimit.getUsageTimeLimit() + 5000));
         if (appUsageLimit.getTextDisplayed() != null || appUsageLimit.getTextDisplayed().equals("")) {
             binding.tvNote.setVisibility(View.GONE);
         } else {

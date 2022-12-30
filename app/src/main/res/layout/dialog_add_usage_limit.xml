@@ -100,7 +100,7 @@
             android:id="@+id/tv_app_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/total_usage_in_limit"
+            android:text="@string/choose_app_to_limit_usage_time"
             android:textSize="16sp"
             android:textColor="@color/white"
             android:layout_marginStart="@dimen/small_margin"

@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_navigation_home_to_filterDialog"
             app:destination="@id/filterDialog" />
+        <action
+            android:id="@+id/action_navigation_home_to_appDetailFragment"
+            app:destination="@id/appDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_usage_limits"
@@ -47,4 +50,12 @@
         android:id="@+id/filterDialog"
         android:name="com.example.apptracking.ui.dialog.FilterDialog"
         android:label="FilterDialog" />
+    <fragment
+        android:id="@+id/appDetailFragment"
+        android:name="com.example.apptracking.ui.fragment.appdetail.AppDetailFragment"
+        android:label="AppDetailFragment" >
+        <argument
+            android:name="app"
+            app:argType="com.example.apptracking.data.model.App" />
+    </fragment>
 </navigation>

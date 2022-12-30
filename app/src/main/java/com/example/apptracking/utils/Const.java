@@ -2,6 +2,10 @@ package com.example.apptracking.utils;
 
 public final class Const {
     public static final long A_MINUS = 1000 * 60 ;
+    public static final long FIVE_MINUS = A_MINUS * 5;
+    public static final long FIFTEEN_MINUS = A_MINUS * 15;
+    public static final long THIRTY_MINUS = A_MINUS * 30 ;
+    public static final long A_HOUR = A_MINUS * 60 ;
 
     public static final String SORT_TYPE = "sort_type";
     public static final String DB_NAME = "app_tracking.db";

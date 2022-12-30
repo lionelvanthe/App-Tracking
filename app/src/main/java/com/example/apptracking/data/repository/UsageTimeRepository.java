@@ -103,4 +103,8 @@ public class UsageTimeRepository {
     public Float[] getUsageTimePerHourFollowPackageName(String packageName) {
         return usageTime.getUsageTimePerHourFollowPackageName(packageName);
     }
+
+    public int getNotificationReceive(String packageName) {
+        return usageTime.getNotificationReceive(packageName);
+    }
 }

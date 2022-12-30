@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import com.example.apptracking.R;
+import com.example.apptracking.data.local.UsageTime;
 import com.example.apptracking.data.model.App;
 import com.example.apptracking.databinding.FragmentHomeBinding;
 import com.example.apptracking.ui.activity.main.MainViewModel;
@@ -67,12 +68,13 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
         adapter = new AppUsageAdapter(requireContext(),
                 R.layout.item_app_layout,
                 model -> {
-
+                    NavDirections action = HomeFragmentDirections.actionNavigationHomeToAppDetailFragment(model);
+                    Navigation.findNavController(view).navigate(action);
         });
     }
     
     @Override
-    protected void setupLister() {
+    protected void setupListener() {
         binding.layoutLinaerMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,14 +126,12 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
                 binding.barView.setDataList(arrayList, 60);
             }
         });
-        long test = System.currentTimeMillis();
         viewModel.isSortDataComplete.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 if (aBoolean) {
                     binding.progress.setVisibility(View.GONE);
                     binding.recyclerViewApp.setVisibility(View.VISIBLE);
-//                    Log.d("Thenv", "onChanged time: " + (System.currentTimeMillis() - test));
                 } else {
                     binding.progress.setVisibility(View.VISIBLE);
                     binding.recyclerViewApp.setVisibility(View.GONE);

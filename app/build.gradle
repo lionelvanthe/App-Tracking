@@ -67,4 +67,7 @@ dependencies {
 
     //Floating action button expandable
     implementation 'com.github.imtuann:FloatingActionButtonExpandable:1.1.2'
+
+    //MpChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

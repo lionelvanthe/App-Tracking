@@ -41,7 +41,7 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding, HomeV
     }
 
     @Override
-    protected void setupLister() {
+    protected void setupListener() {
         binding.imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
