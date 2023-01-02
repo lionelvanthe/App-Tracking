@@ -100,8 +100,12 @@ public class UsageLimitsFragment extends BaseBindingFragment<FragmentUsageLimits
             public void onChanged(List<String> strings) {
                 if (strings != null) {
                     for (String packageName: strings) {
-                        Hawk.put(packageName, viewModel.getUsageTimePerHourFollowPackageName(packageName));
-                        viewModel.updateUsageTimeOfDay(viewModel.geUsageTimeFollowPackageName(packageName), packageName);
+                        if ( viewModel.getUsageTimePerHourFollowPackageName(packageName) != null) {
+                            Hawk.put(packageName, viewModel.getUsageTimePerHourFollowPackageName(packageName));
+                        }
+                        if (viewModel.geUsageTimeFollowPackageName(packageName) != 0) {
+                            viewModel.updateUsageTimeOfDay(viewModel.geUsageTimeFollowPackageName(packageName), packageName);
+                        }
                     }
                 }
             }

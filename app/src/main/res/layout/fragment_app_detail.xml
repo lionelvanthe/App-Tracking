@@ -25,44 +25,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_back"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_margin"
+                    android:padding="@dimen/icon_padding"
+                    android:src="@drawable/ic_arrow_back"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_title_controller"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/big_margin"
+                    android:layout_marginStart="@dimen/small_margin"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="@string/app_name"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/img_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/small_margin"
-                    android:adjustViewBounds="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="@dimen/icon_padding"
-                    android:src="@drawable/ic_search"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/img_share"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/img_share"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/normal_margin"
-                    android:adjustViewBounds="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="@dimen/icon_padding"
-                    android:src="@drawable/ic_share"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/img_back"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -297,7 +283,7 @@
                 app:layout_constraintTop_toBottomOf="@id/layout_installation_date"/>
 
             <View
-                android:id="@+id/layout_chart_daily"
+                android:id="@+id/layout_chart_device_unlocks"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_marginTop="@dimen/small_margin"
@@ -308,16 +294,16 @@
                 app:layout_constraintBottom_toTopOf="@id/layout_hourly_breakdown"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_daily_breakdown"
+                android:id="@+id/tv_device_unlocks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/daily_breakdown"
                 android:textColor="@color/color_text_gray"
                 android:textSize="14sp"
                 android:layout_marginTop="12dp"
-                app:layout_constraintStart_toStartOf="@id/layout_chart_daily"
-                app:layout_constraintEnd_toEndOf="@id/layout_chart_daily"
-                app:layout_constraintTop_toTopOf="@id/layout_chart_daily"/>
+                app:layout_constraintStart_toStartOf="@id/layout_chart_device_unlocks"
+                app:layout_constraintEnd_toEndOf="@id/layout_chart_device_unlocks"
+                app:layout_constraintTop_toTopOf="@id/layout_chart_device_unlocks"/>
 
             <HorizontalScrollView
                 android:id="@+id/horizontal_scroll"
@@ -326,10 +312,10 @@
                 android:layout_marginHorizontal="@dimen/normal_margin"
                 android:layout_marginVertical="@dimen/small_margin"
                 android:scrollbars="none"
-                app:layout_constraintStart_toStartOf="@id/layout_chart_daily"
-                app:layout_constraintEnd_toEndOf="@id/layout_chart_daily"
-                app:layout_constraintTop_toBottomOf="@id/tv_daily_breakdown"
-                app:layout_constraintBottom_toBottomOf="@id/layout_chart_daily">
+                app:layout_constraintStart_toStartOf="@id/layout_chart_device_unlocks"
+                app:layout_constraintEnd_toEndOf="@id/layout_chart_device_unlocks"
+                app:layout_constraintTop_toBottomOf="@id/tv_device_unlocks"
+                app:layout_constraintBottom_toBottomOf="@id/layout_chart_device_unlocks">
 
                 <com.example.apptracking.ui.custom.BarChartView
                     android:id="@+id/bar_view"
@@ -345,7 +331,7 @@
                 android:background="@drawable/bg_layout_chart"
                 app:layout_constraintEnd_toEndOf="@id/layout_average"
                 app:layout_constraintStart_toStartOf="@id/layout_notification"
-                app:layout_constraintTop_toBottomOf="@id/layout_chart_daily"
+                app:layout_constraintTop_toBottomOf="@id/layout_chart_device_unlocks"
                 app:layout_constraintBottom_toTopOf="@id/layout_session_length"/>
 
             <androidx.appcompat.widget.AppCompatTextView

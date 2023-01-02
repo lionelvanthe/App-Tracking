@@ -30,7 +30,6 @@ public class UsageLimitsViewModel extends BaseViewModel {
     private AppUsageLimitRepository appUsageLimitRepository;
     private Application application;
 
-
     private MutableLiveData<List<AppUsageLimit>> _appUsageLimits = new MutableLiveData<>();
     public LiveData<List<AppUsageLimit>>  appUsageLimits  = _appUsageLimits;
 
@@ -90,10 +89,6 @@ public class UsageLimitsViewModel extends BaseViewModel {
 
             }
         });
-    }
-
-    public long getTotalUsageTime() {
-        return usageTimeRepository.getTotalUsageTime();
     }
 
     public long geUsageTimeFollowPackageName(String packageName) {

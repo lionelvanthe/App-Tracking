@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_navigation_home_to_appDetailFragment"
             app:destination="@id/appDetailFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_usage_limits"
@@ -31,9 +34,6 @@
         android:id="@+id/navigation_more"
         android:name="com.example.apptracking.ui.fragment.more.MoreFragment"
         android:label="MoreFragment" >
-        <action
-            android:id="@+id/action_navigation_more_to_navigation_home"
-            app:destination="@id/navigation_home" />
     </fragment>
     <dialog
         android:id="@+id/addUsageLimitDialog"
@@ -58,4 +58,8 @@
             android:name="app"
             app:argType="com.example.apptracking.data.model.App" />
     </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.apptracking.ui.fragment.search.SearchFragment"
+        android:label="SearchFragment" />
 </navigation>

@@ -23,13 +23,17 @@ public class UsageTime {
     UsageStatsManager mUsageStatsManager;
     private Context context;
 
+    private int notificationReceives = 0;
+    private int deviceUnlocks = 0;
+
     private static UsageTime instance;
 
     private final HashMap<String, List<UsageEvents.Event>> mapEvents;
     private final HashMap<String, Integer> mapNotificationReceives;
 
     private final HashMap<String, App> mapAppInToDay;
-    private HashMap<String, App> mapApp;
+    private final HashMap<String, App> mapApp;
+    private final HashMap<Integer, Float> hashMapDeviceUnlocksPerHour;
 
     private final HashMap<Integer, Float> hashMapUsageTimePerHourOfDeviceInToday;
     private final HashMap<Integer, Float> hashMapUsageTimePerHourOfDevice;
@@ -47,6 +51,7 @@ public class UsageTime {
         mapApp = new HashMap<>();
         mapEvents = new HashMap<>();
         mapNotificationReceives = new HashMap<>();
+        hashMapDeviceUnlocksPerHour = new HashMap<>();
         hashMapUsageTimePerHourOfDevice = new HashMap<>();
         hashMapUsageTimePerHourOfDeviceInToday = new HashMap<>();
         mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
@@ -85,6 +90,7 @@ public class UsageTime {
 
     private void initHashMap(long startTime, long endTime, HashMap<String, App> appHashMap) {
         UsageEvents.Event currentEvent;
+        Calendar calendar = Calendar.getInstance();
         if (mUsageStatsManager != null) {
             UsageEvents usageEvents = mUsageStatsManager.queryEvents(startTime, endTime);
             while (usageEvents.hasNextEvent()) {
@@ -108,6 +114,14 @@ public class UsageTime {
                     } else {
                         mapNotificationReceives.put(key, mapNotificationReceives.get(key) + 1);
                     }
+                    notificationReceives++;
+                }
+
+                if (currentEvent.getEventType() == 17 ) {
+                    calendar.setTimeInMillis(currentEvent.getTimeStamp());
+                    int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                    addValueToHashMap(hour, 1, hashMapDeviceUnlocksPerHour);
+                    deviceUnlocks++;
                 }
             }
         }
@@ -230,9 +244,11 @@ public class UsageTime {
 
     public List<App> getApps() {
         if (Hawk.get(Const.IS_TODAY)) {
+            Log.d("Thenv", "getApps: " + mapAppInToDay.values().size());
             return new ArrayList<>(mapAppInToDay.values());
 
         } else {
+            Log.d("Thenv", "getApps: " + mapApp.values().size());
             return new ArrayList<>(mapApp.values());
         }
     }
@@ -256,20 +272,37 @@ public class UsageTime {
 
     public long geUsageTimeFollowPackageName(String packageName) {
         App app = mapAppInToDay.get(packageName);
+        if (app == null) {
+            return 0;
+        }
         return app.getUsageTimeOfDay();
     }
 
     public Float[] getUsageTimePerHourFollowPackageName(String packageName) {
         App app = mapAppInToDay.get(packageName);
-        return app.getUsageTimePerHour();
+        if (app != null) {
+            return app.getUsageTimePerHour();
+        }
+        return null;
     }
 
     public int getNotificationReceive(String packageName) {
-
         if (mapNotificationReceives.get(packageName) != null) {
             return mapNotificationReceives.get(packageName);
         } else {
             return 0;
         }
+    }
+
+    public HashMap<Integer, Float> getHashMapDeviceUnlocksPerHour() {
+        return hashMapDeviceUnlocksPerHour;
+    }
+
+    public int getNotificationReceives() {
+        return notificationReceives;
+    }
+
+    public int getDeviceUnlocks() {
+        return deviceUnlocks;
     }
 }

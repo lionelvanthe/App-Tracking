@@ -23,7 +23,9 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class UsageTimeRepository {
+
     private UsageTime usageTime;
+    private float maxDeviceUnlocks;
 
 
     public UsageTimeRepository(UsageTime usageTime) {
@@ -40,17 +42,31 @@ public class UsageTimeRepository {
                 .subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
     }
 
+    public List<App> getAppsInMain() {
+        return usageTime.getApps();
+    }
+
     public Single<ArrayList<Float>> getListUsageTimePerHourOfDevice() {
-        return Single.fromCallable(() -> convertHashMapUsageTimePerHourToList(usageTime.getHashMapUsageTimePerHourOfDevice()))
+        return Single.fromCallable(() -> convertHashMapPerHourToList(usageTime.getHashMapUsageTimePerHourOfDevice(), false))
                 .subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
     }
 
-    private ArrayList<Float> convertHashMapUsageTimePerHourToList(HashMap<Integer, Float> hashMap) {
+    public Single<ArrayList<Float>> getListDeviceUnlocksPerHour() {
+        return Single.fromCallable(() -> convertHashMapPerHourToList(usageTime.getHashMapDeviceUnlocksPerHour(), true))
+                .subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
+    }
+
+    private ArrayList<Float> convertHashMapPerHourToList(HashMap<Integer, Float> hashMap, boolean isSetMaxDeviceUnlock) {
         ArrayList<Float> listUsageTimePerHour = new ArrayList<>();
         for (int i = 0 ; i < 24 ; i ++) {
             if (hashMap.get(i) == null) {
                 listUsageTimePerHour.add(0F);
             } else {
+                if (isSetMaxDeviceUnlock) {
+                    if (hashMap.get(i) > maxDeviceUnlocks) {
+                        maxDeviceUnlocks = hashMap.get(i);
+                    }
+                }
                 listUsageTimePerHour.add(hashMap.get(i));
             }
         }
@@ -106,5 +122,17 @@ public class UsageTimeRepository {
 
     public int getNotificationReceive(String packageName) {
         return usageTime.getNotificationReceive(packageName);
+    }
+
+    public float getMaxDeviceUnlocks() {
+        return maxDeviceUnlocks;
+    }
+
+    public int getDeviceUnlocks() {
+        return usageTime.getDeviceUnlocks();
+    }
+
+    public int getNotificationReceives() {
+        return usageTime.getNotificationReceives();
     }
 }

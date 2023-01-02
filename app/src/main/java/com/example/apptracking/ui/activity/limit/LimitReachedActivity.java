@@ -56,7 +56,7 @@ public class LimitReachedActivity extends BaseBindingActivity<ActivityLimitReach
             binding.tvNote.setText(appUsageLimit.getTextDisplayed());
         }
         CopyOnWriteArrayList<Float> arrayList = new CopyOnWriteArrayList<>(Hawk.get(appUsageLimit.getPackageName(), new Float[]{}));
-        binding.barView.setDataList(arrayList, 60);
+        binding.barView.setDataList(arrayList, 60, true);
 
     }
 

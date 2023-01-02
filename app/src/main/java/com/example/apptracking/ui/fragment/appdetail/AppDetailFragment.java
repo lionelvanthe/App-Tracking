@@ -3,28 +3,22 @@ package com.example.apptracking.ui.fragment.appdetail;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import androidx.core.content.ContextCompat;
 import com.example.apptracking.R;
 import com.example.apptracking.data.model.App;
 import com.example.apptracking.databinding.FragmentAppDetailBinding;
 import com.example.apptracking.ui.base.BaseBindingFragment;
+import com.example.apptracking.ui.custom.HourlyChart;
 import com.example.apptracking.ui.custom.MyAxisTitleFormatter;
 import com.example.apptracking.ui.custom.MyAxisValueFormatter;
 import com.example.apptracking.utils.Utils;
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.RadarDataSet;
-import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -59,10 +53,13 @@ public class AppDetailFragment extends BaseBindingFragment<FragmentAppDetailBind
             e.printStackTrace();
         }
 
-        CopyOnWriteArrayList<Float> arrayList = new CopyOnWriteArrayList<>(app.getUsageTimePerHour());
-        binding.barView.setDataList(arrayList, 60);
+        CopyOnWriteArrayList<Float> arrayListSessionLength = new CopyOnWriteArrayList<>(app.getUsageTimePerHour());
+        binding.barView.setDataList(arrayListSessionLength, 60, true);
         setupSessionLengthChart(app.getMapSessionsLength());
-        setupHourlyBreakdown(app.getUsageTimePerHour());
+
+        CopyOnWriteArrayList<Float> arrayListHourly = new CopyOnWriteArrayList<>(app.getUsageTimePerHour());
+        HourlyChart hourlyChart = new HourlyChart(binding.chartHourlyBreakdown, arrayListHourly, requireContext());
+        hourlyChart.setDataForHourlyChart();
 
     }
 
@@ -83,86 +80,6 @@ public class AppDetailFragment extends BaseBindingFragment<FragmentAppDetailBind
 
         setDataForSessionsLengthChart(mapSessionsLength);
     }
-
-    private void setupHourlyBreakdown(Float[] usageTimePerHour) {
-        binding.chartHourlyBreakdown.setBackgroundColor(Color.rgb(38, 36, 47));
-
-        binding.chartHourlyBreakdown.getDescription().setEnabled(false);
-
-        binding.chartHourlyBreakdown.setWebLineWidth(1f);
-        binding.chartHourlyBreakdown.setWebColor(Color.WHITE);
-        binding.chartHourlyBreakdown.setWebLineWidthInner(1f);
-        binding.chartHourlyBreakdown.setWebColorInner(Color.WHITE);
-        binding.chartHourlyBreakdown.setWebAlpha(100);
-
-        binding.chartHourlyBreakdown.animateXY(1400, 1400, Easing.EaseInOutQuad);
-
-        XAxis xAxis = binding.chartHourlyBreakdown.getXAxis();
-        xAxis.setTextSize(9f);
-        xAxis.setYOffset(0f);
-        xAxis.setXOffset(0f);
-        xAxis.setValueFormatter(new ValueFormatter() {
-
-            private final String[] mActivities = getResources().getStringArray(R.array.hours_daily);
-
-            @Override
-            public String getFormattedValue(float value) {
-                if (value/2 < mActivities.length) {
-                    if (value%2 == 0) {
-                        Log.d("Thenv", "getFormattedValue: " + value);
-                        return mActivities[(int) (value/2)];
-                    } else {
-                        return "";
-                    }
-                } else {
-                    return "";
-                }
-            }
-        });
-        xAxis.setTextColor(Color.WHITE);
-
-
-        YAxis yAxis = binding.chartHourlyBreakdown.getYAxis();
-        yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(80f);
-        yAxis.setLabelCount(5, true);
-        yAxis.setDrawLabels(false);
-
-        binding.chartHourlyBreakdown.getLegend().setEnabled(false);
-
-        setDataForHourlyChart(usageTimePerHour);
-    }
-
-    private void setDataForHourlyChart(Float[] usageTimePerHour) {
-
-        ArrayList<RadarEntry> entries = new ArrayList<>();
-
-        for (int i = 0; i < 24; i++) {
-            entries.add(new RadarEntry(usageTimePerHour[i] + 20));
-        }
-
-
-        RadarDataSet dataSet = new RadarDataSet(entries, "");
-        dataSet.setColor(Color.rgb(133,147,189));
-        dataSet.setFillColor(Color.rgb(81,86,116));
-        dataSet.setDrawFilled(true);
-        dataSet.setFillAlpha(180);
-        dataSet.setLineWidth(1.2f);
-        dataSet.setDrawHighlightCircleEnabled(true);
-        dataSet.setDrawHighlightIndicators(false);
-
-        ArrayList<IRadarDataSet> sets = new ArrayList<>();
-        sets.add(dataSet);
-
-        RadarData data = new RadarData(sets);
-        data.setValueTextSize(8f);
-        data.setDrawValues(false);
-        data.setValueTextColor(Color.WHITE);
-
-        binding.chartHourlyBreakdown.setData(data);
-        binding.chartHourlyBreakdown.invalidate();
-    }
-
 
     private void setupXAxis() {
 
@@ -237,7 +154,12 @@ public class AppDetailFragment extends BaseBindingFragment<FragmentAppDetailBind
 
     @Override
     protected void setupListener() {
-
+        binding.imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requireActivity().onBackPressed();
+            }
+        });
     }
 
     @Override

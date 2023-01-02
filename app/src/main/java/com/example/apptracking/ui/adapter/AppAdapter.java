@@ -54,11 +54,7 @@ public class AppAdapter extends BaseAdapter<AppUsageLimit> {
 
         @Override
         public void bindData(@NonNull AppUsageLimit data) {
-            if (data.getName().equals(Const.TOTAL_USAGE)) {
-                binding.imgIconApp.setBackgroundResource(R.drawable.ic_launcher_foreground);
-            } else {
-                binding.imgIconApp.setBackground(Utils.getPackageIcon(context, data.getPackageName()));
-            }
+            binding.imgIconApp.setBackground(Utils.getPackageIcon(context, data.getPackageName()));
             binding.tvAppName.setText(data.getName());
         }
 

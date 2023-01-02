@@ -56,6 +56,11 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
         getParentFragmentManager().setFragmentResultListener(Const.FILTER_KEY, this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                if (bundle.getLong(Const.START_TIME) == 0) {
+                    viewModel.getApps();
+                    Hawk.put(Const.IS_LOAD_DATA, true);
+                    return;
+                }
                 if (Hawk.get(Const.IS_TODAY)) {
                     viewModel.getApps();
                 } else {
@@ -90,6 +95,14 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
                 Navigation.findNavController(view).navigate(action);
             }
         });
+
+        binding.imgSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavDirections action = HomeFragmentDirections.actionNavigationHomeToSearchFragment();
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
     }
 
     @Override
@@ -109,7 +122,6 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
             public void onChanged(List<App> apps) {
                 if (apps != null && Hawk.get(Const.IS_LOAD_DATA, true)) {
                     adapter.setListData(apps);
-                    Log.d("Thenv", "onChanged: adfadfasdfasdfasdfasf");
                     adapter.setTotalUsageTime(viewModel.getTotalUsageTime());
                     binding.recyclerViewApp.setAdapter(adapter);
                     viewModel.getListUsageTimePerHourOfDevice();
@@ -123,7 +135,7 @@ public class HomeFragment extends BaseBindingFragment<FragmentHomeBinding, HomeV
             @Override
             public void onChanged(List<Float> floats) {
                 CopyOnWriteArrayList<Float> arrayList = new CopyOnWriteArrayList<>(floats);
-                binding.barView.setDataList(arrayList, 60);
+                binding.barView.setDataList(arrayList, 60, true);
             }
         });
         viewModel.isSortDataComplete.observe(getViewLifecycleOwner(), new Observer<Boolean>() {

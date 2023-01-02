@@ -166,6 +166,8 @@
     <string name="sessions_length_breakdown">Sessions Length Breakdown</string>
     <string name="hourly_breakdown">Hourly Breakdown</string>
     <string name="choose_app_to_limit_usage_time">Choose app to limit usage time</string>
+    <string name="device_unlocks">Device Unlocks</string>
+    <string name="today_s_device_unlocks">Today\'s device unlocks</string>
 
 
 </resources>

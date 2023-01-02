@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <queries>
         <package android:name="com.example.store" />
         <package android:name="com.example.service" />
@@ -51,9 +53,7 @@
         </activity>
 
         <activity
-            android:name=".ui.activity.limit.LimitReachedActivity"
-            android:launchMode="singleTask"
-            android:excludeFromRecents="true" />
+            android:name=".ui.activity.limit.LimitReachedActivity" />
 
         <receiver android:name=".broadcastreceiver.AlarmReceiver"
             android:enabled="true"

@@ -119,7 +119,7 @@ public class BarChartView extends View {
         postInvalidate();
     }
 
-    public void setDataList(List<Float> list, int max) {
+    public void setDataList(List<Float> list, int max, boolean isTime) {
         if (max == 0) max = 1;
 
         percentList.clear();
@@ -127,18 +127,30 @@ public class BarChartView extends View {
         topTextList.clear();
 
         for (Float data : list) {
+
             if (data > max) {
                 targetPercentList.add(0f);
-                topTextList.add(getContext().getString(R.string.usage_time_minus, String.valueOf(max)));
             } else {
                 targetPercentList.add(1 - data / (float) max);
-                if (0 < data && data < 1) {
-                    int second = (int) ((data * Const.A_MINUS) / 1000);
-                    topTextList.add(getContext().getString(R.string.usage_time_second, String.valueOf(second)));
-                } else if (data == 0) {
+            }
+            if (isTime) {
+                if (data > max) {
+                    topTextList.add(getContext().getString(R.string.usage_time_minus, String.valueOf(max)));
+                } else {
+                    if (0 < data && data < 1) {
+                        int second = (int) ((data * Const.A_MINUS) / 1000);
+                        topTextList.add(getContext().getString(R.string.usage_time_second, String.valueOf(second)));
+                    } else if (data == 0) {
+                        topTextList.add("");
+                    } else {
+                        topTextList.add(getContext().getString(R.string.usage_time_minus, String.valueOf(Math.round(data))));
+                    }
+                }
+            } else {
+                if (data == 0) {
                     topTextList.add("");
                 } else {
-                    topTextList.add(getContext().getString(R.string.usage_time_minus, String.valueOf(Math.round(data))));
+                    topTextList.add(String.valueOf(Math.round(data)));
                 }
             }
 
