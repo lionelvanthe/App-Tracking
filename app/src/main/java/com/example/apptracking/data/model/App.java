@@ -34,6 +34,7 @@ public class App implements Serializable {
         this.mapSessionsLength = new HashMap<>();
         this.usageTimePerHour = new Float[]{0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F};
         this.usageTimeOfDay = 0;
+        this.timesOpened = 0;
     }
 
     public long getUsageTimeOfDay() {

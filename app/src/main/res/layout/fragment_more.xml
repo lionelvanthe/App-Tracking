@@ -294,7 +294,7 @@
                 app:layout_constraintEnd_toEndOf="@id/layout_average"
                 app:layout_constraintStart_toStartOf="@id/layout_notification"
                 app:layout_constraintTop_toBottomOf="@id/layout_chart_device_unlocks"
-                app:layout_constraintBottom_toTopOf="@id/layout_session_length"/>
+                app:layout_constraintBottom_toTopOf="@id/layout_app_usage_breakdown"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_hourly_breakdown"
@@ -319,7 +319,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/layout_hourly_breakdown"/>
 
             <View
-                android:id="@+id/layout_session_length"
+                android:id="@+id/layout_app_usage_breakdown"
                 android:layout_width="0dp"
                 android:layout_height="300dp"
                 android:layout_marginVertical="@dimen/normal_margin"
@@ -329,25 +329,25 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_sessions_length_breakdown"
+                android:id="@+id/tv_app_usage_breakdown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sessions_length_breakdown"
+                android:text="@string/app_usage_breakdown"
                 android:textColor="@color/color_text_gray"
                 android:textSize="14sp"
                 android:layout_marginTop="12dp"
-                app:layout_constraintStart_toStartOf="@id/layout_session_length"
-                app:layout_constraintEnd_toEndOf="@id/layout_session_length"
-                app:layout_constraintTop_toTopOf="@id/layout_session_length"/>
+                app:layout_constraintStart_toStartOf="@id/layout_app_usage_breakdown"
+                app:layout_constraintEnd_toEndOf="@id/layout_app_usage_breakdown"
+                app:layout_constraintTop_toTopOf="@id/layout_app_usage_breakdown"/>
 
             <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/chart_session_length"
+                android:id="@+id/chart_app_usage_breakdown"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="@id/layout_session_length"
-                app:layout_constraintEnd_toEndOf="@id/layout_session_length"
-                app:layout_constraintTop_toBottomOf="@id/tv_sessions_length_breakdown"
-                app:layout_constraintBottom_toBottomOf="@id/layout_session_length"/>
+                app:layout_constraintStart_toStartOf="@id/layout_app_usage_breakdown"
+                app:layout_constraintEnd_toEndOf="@id/layout_app_usage_breakdown"
+                app:layout_constraintTop_toBottomOf="@id/tv_app_usage_breakdown"
+                app:layout_constraintBottom_toBottomOf="@id/layout_app_usage_breakdown"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

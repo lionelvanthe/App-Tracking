@@ -7,7 +7,8 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.apptracking.ui.fragment.home.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_moreFragment"
             app:destination="@id/navigation_more" />
@@ -33,7 +34,8 @@
     <fragment
         android:id="@+id/navigation_more"
         android:name="com.example.apptracking.ui.fragment.more.MoreFragment"
-        android:label="MoreFragment" >
+        android:label="MoreFragment"
+        tools:layout="@layout/fragment_more">
     </fragment>
     <dialog
         android:id="@+id/addUsageLimitDialog"
@@ -49,11 +51,13 @@
     <dialog
         android:id="@+id/filterDialog"
         android:name="com.example.apptracking.ui.dialog.FilterDialog"
-        android:label="FilterDialog" />
+        android:label="FilterDialog"
+        tools:layout="@layout/dialog_filter"/>
     <fragment
         android:id="@+id/appDetailFragment"
         android:name="com.example.apptracking.ui.fragment.appdetail.AppDetailFragment"
-        android:label="AppDetailFragment" >
+        android:label="AppDetailFragment"
+        tools:layout="@layout/fragment_app_detail">
         <argument
             android:name="app"
             app:argType="com.example.apptracking.data.model.App" />
@@ -61,5 +65,10 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.apptracking.ui.fragment.search.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_appDetailFragment"
+            app:destination="@id/appDetailFragment" />
+    </fragment>
 </navigation>

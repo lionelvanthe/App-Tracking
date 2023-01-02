@@ -3,18 +3,13 @@ package com.example.apptracking.data.local;
 import android.app.usage.UsageEvents;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
-import android.util.Log;
-
 import com.example.apptracking.AppApplication;
 import com.example.apptracking.data.model.App;
 import com.example.apptracking.utils.Const;
 import com.example.apptracking.utils.Utils;
 import com.orhanobut.hawk.Hawk;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -244,11 +239,9 @@ public class UsageTime {
 
     public List<App> getApps() {
         if (Hawk.get(Const.IS_TODAY)) {
-            Log.d("Thenv", "getApps: " + mapAppInToDay.values().size());
             return new ArrayList<>(mapAppInToDay.values());
 
         } else {
-            Log.d("Thenv", "getApps: " + mapApp.values().size());
             return new ArrayList<>(mapApp.values());
         }
     }
@@ -304,5 +297,9 @@ public class UsageTime {
 
     public int getDeviceUnlocks() {
         return deviceUnlocks;
+    }
+
+    public HashMap<String, App> getMapAppInToDay() {
+        return mapAppInToDay;
     }
 }

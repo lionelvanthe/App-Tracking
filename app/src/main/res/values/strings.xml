@@ -168,6 +168,9 @@
     <string name="choose_app_to_limit_usage_time">Choose app to limit usage time</string>
     <string name="device_unlocks">Device Unlocks</string>
     <string name="today_s_device_unlocks">Today\'s device unlocks</string>
+    <string name="no_data">No data</string>
+    <string name="app_usage_breakdown">App Usage Breakdown</string>
+    <string name="there_is_no_usage_for_this_time_period">There is no usage for this time period</string>
 
 
 </resources>

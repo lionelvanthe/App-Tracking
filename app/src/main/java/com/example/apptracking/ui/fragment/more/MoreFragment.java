@@ -93,35 +93,35 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding, MoreV
     }
 
     private void pieChart() {
-        binding.chartSessionLength.setDrawRoundedSlices(true);
-        binding.chartSessionLength.setUsePercentValues(true);
-        binding.chartSessionLength.getDescription().setEnabled(false);
-        binding.chartSessionLength.setExtraOffsets(22, 22, 22, 22);
+        binding.chartAppUsageBreakdown.setDrawRoundedSlices(true);
+        binding.chartAppUsageBreakdown.setUsePercentValues(true);
+        binding.chartAppUsageBreakdown.getDescription().setEnabled(false);
+        binding.chartAppUsageBreakdown.setExtraOffsets(22, 22, 22, 22);
 
-        binding.chartSessionLength.setDragDecelerationFrictionCoef(0.5f);
+        binding.chartAppUsageBreakdown.setDragDecelerationFrictionCoef(0.5f);
 
-        binding.chartSessionLength.setCenterText(generateCenterSpannableText());
+        binding.chartAppUsageBreakdown.setCenterText(generateCenterSpannableText());
 
-        binding.chartSessionLength.setDrawHoleEnabled(true);
-        binding.chartSessionLength.setHoleColor(getResources().getColor(R.color.color_bg_root));
+        binding.chartAppUsageBreakdown.setDrawHoleEnabled(true);
+        binding.chartAppUsageBreakdown.setHoleColor(getResources().getColor(R.color.color_bg_root));
 
-        binding.chartSessionLength.setTransparentCircleColor(Color.WHITE);
-        binding.chartSessionLength.setTransparentCircleAlpha(110);
+        binding.chartAppUsageBreakdown.setTransparentCircleColor(Color.WHITE);
+        binding.chartAppUsageBreakdown.setTransparentCircleAlpha(110);
 
-        binding.chartSessionLength.setHoleRadius(90f);
-        binding.chartSessionLength.setTransparentCircleRadius(61f);
+        binding.chartAppUsageBreakdown.setHoleRadius(90f);
+        binding.chartAppUsageBreakdown.setTransparentCircleRadius(61f);
 
-        binding.chartSessionLength.setDrawCenterText(true);
+        binding.chartAppUsageBreakdown.setDrawCenterText(true);
 
-        binding.chartSessionLength.setRotationAngle(70);
+        binding.chartAppUsageBreakdown.setRotationAngle(70);
         // enable rotation of the chart by touch
-        binding.chartSessionLength.setRotationEnabled(true);
-        binding.chartSessionLength.setHighlightPerTapEnabled(true);
-        binding.chartSessionLength.setDrawHoleEnabled(true);
+        binding.chartAppUsageBreakdown.setRotationEnabled(true);
+        binding.chartAppUsageBreakdown.setHighlightPerTapEnabled(true);
+        binding.chartAppUsageBreakdown.setDrawHoleEnabled(true);
 
-        binding.chartSessionLength.animateY(1400, Easing.EaseInOutQuad);
+        binding.chartAppUsageBreakdown.animateY(1400, Easing.EaseInOutQuad);
 
-        binding.chartSessionLength.getLegend().setEnabled(false);
+        binding.chartAppUsageBreakdown.getLegend().setEnabled(false);
     }
 
     private SpannableString generateCenterSpannableText() {
@@ -168,9 +168,9 @@ public class MoreFragment extends BaseBindingFragment<FragmentMoreBinding, MoreV
                 return "";
             }
         });
-        binding.chartSessionLength.setData(data);
+        binding.chartAppUsageBreakdown.setData(data);
 
-        binding.chartSessionLength.invalidate();
+        binding.chartAppUsageBreakdown.invalidate();
     }
 
     private Drawable resizeDrawable(Drawable drawable) {

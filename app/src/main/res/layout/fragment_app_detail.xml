@@ -38,7 +38,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_title_controller"
+                    android:id="@+id/tv_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/small_margin"
@@ -283,7 +283,7 @@
                 app:layout_constraintTop_toBottomOf="@id/layout_installation_date"/>
 
             <View
-                android:id="@+id/layout_chart_device_unlocks"
+                android:id="@+id/layout_chart_daily_breakdown"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_marginTop="@dimen/small_margin"
@@ -294,16 +294,27 @@
                 app:layout_constraintBottom_toTopOf="@id/layout_hourly_breakdown"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_device_unlocks"
+                android:id="@+id/tv_no_data_daily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/there_is_no_usage_for_this_time_period"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/tv_daily_breakdown"
+                app:layout_constraintStart_toStartOf="@id/layout_chart_daily_breakdown"
+                app:layout_constraintEnd_toEndOf="@+id/layout_chart_daily_breakdown"
+                app:layout_constraintBottom_toBottomOf="@+id/layout_chart_daily_breakdown"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_daily_breakdown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/daily_breakdown"
                 android:textColor="@color/color_text_gray"
                 android:textSize="14sp"
                 android:layout_marginTop="12dp"
-                app:layout_constraintStart_toStartOf="@id/layout_chart_device_unlocks"
-                app:layout_constraintEnd_toEndOf="@id/layout_chart_device_unlocks"
-                app:layout_constraintTop_toTopOf="@id/layout_chart_device_unlocks"/>
+                app:layout_constraintStart_toStartOf="@id/layout_chart_daily_breakdown"
+                app:layout_constraintEnd_toEndOf="@id/layout_chart_daily_breakdown"
+                app:layout_constraintTop_toTopOf="@id/layout_chart_daily_breakdown"/>
 
             <HorizontalScrollView
                 android:id="@+id/horizontal_scroll"
@@ -312,10 +323,10 @@
                 android:layout_marginHorizontal="@dimen/normal_margin"
                 android:layout_marginVertical="@dimen/small_margin"
                 android:scrollbars="none"
-                app:layout_constraintStart_toStartOf="@id/layout_chart_device_unlocks"
-                app:layout_constraintEnd_toEndOf="@id/layout_chart_device_unlocks"
-                app:layout_constraintTop_toBottomOf="@id/tv_device_unlocks"
-                app:layout_constraintBottom_toBottomOf="@id/layout_chart_device_unlocks">
+                app:layout_constraintStart_toStartOf="@id/layout_chart_daily_breakdown"
+                app:layout_constraintEnd_toEndOf="@id/layout_chart_daily_breakdown"
+                app:layout_constraintTop_toBottomOf="@id/tv_daily_breakdown"
+                app:layout_constraintBottom_toBottomOf="@id/layout_chart_daily_breakdown">
 
                 <com.example.apptracking.ui.custom.BarChartView
                     android:id="@+id/bar_view"
@@ -331,7 +342,7 @@
                 android:background="@drawable/bg_layout_chart"
                 app:layout_constraintEnd_toEndOf="@id/layout_average"
                 app:layout_constraintStart_toStartOf="@id/layout_notification"
-                app:layout_constraintTop_toBottomOf="@id/layout_chart_device_unlocks"
+                app:layout_constraintTop_toBottomOf="@id/layout_chart_daily_breakdown"
                 app:layout_constraintBottom_toTopOf="@id/layout_session_length"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -345,6 +356,18 @@
                 app:layout_constraintStart_toStartOf="@id/layout_hourly_breakdown"
                 app:layout_constraintEnd_toEndOf="@id/layout_hourly_breakdown"
                 app:layout_constraintTop_toTopOf="@id/layout_hourly_breakdown"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_no_data_hourly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/there_is_no_usage_for_this_time_period"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/tv_hourly_breakdown"
+                app:layout_constraintStart_toStartOf="@id/layout_hourly_breakdown"
+                app:layout_constraintEnd_toEndOf="@+id/layout_hourly_breakdown"
+                app:layout_constraintBottom_toBottomOf="@+id/layout_hourly_breakdown"/>
 
             <com.github.mikephil.charting.charts.RadarChart
                 android:id="@+id/chart_hourly_breakdown"
@@ -377,6 +400,18 @@
                 app:layout_constraintStart_toStartOf="@id/layout_session_length"
                 app:layout_constraintEnd_toEndOf="@id/layout_session_length"
                 app:layout_constraintTop_toTopOf="@id/layout_session_length"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_no_data_sessions_length"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/there_is_no_usage_for_this_time_period"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/tv_sessions_length_breakdown"
+                app:layout_constraintStart_toStartOf="@id/layout_session_length"
+                app:layout_constraintEnd_toEndOf="@+id/layout_session_length"
+                app:layout_constraintBottom_toBottomOf="@+id/layout_session_length"/>
 
             <com.github.mikephil.charting.charts.HorizontalBarChart
                 android:id="@+id/chart_session_length"

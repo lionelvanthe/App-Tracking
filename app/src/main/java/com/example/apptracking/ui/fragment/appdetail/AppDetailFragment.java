@@ -41,6 +41,7 @@ public class AppDetailFragment extends BaseBindingFragment<FragmentAppDetailBind
     protected void onCreatedView(View view, Bundle savedInstanceState) {
         app = AppDetailFragmentArgs.fromBundle(getArguments()).getApp();
 
+        binding.tvTitle.setText(app.getName());
         binding.tvUsageContent.setText(Utils.formatMilliSeconds(app.getUsageTimeOfDay()));
         binding.tvOpenContent.setText(String.valueOf(app.getTimesOpened()));
         binding.tvAverageContent.setText(Utils.formatMilliSeconds(app.getUsageTimeOfDay()/24));
@@ -53,14 +54,24 @@ public class AppDetailFragment extends BaseBindingFragment<FragmentAppDetailBind
             e.printStackTrace();
         }
 
-        CopyOnWriteArrayList<Float> arrayListSessionLength = new CopyOnWriteArrayList<>(app.getUsageTimePerHour());
-        binding.barView.setDataList(arrayListSessionLength, 60, true);
-        setupSessionLengthChart(app.getMapSessionsLength());
+        if (app.getUsageTimeOfDay() == 0) {
+            binding.barView.setVisibility(View.GONE);
+            binding.chartSessionLength.setVisibility(View.GONE);
+            binding.chartHourlyBreakdown.setVisibility(View.GONE);
 
-        CopyOnWriteArrayList<Float> arrayListHourly = new CopyOnWriteArrayList<>(app.getUsageTimePerHour());
-        HourlyChart hourlyChart = new HourlyChart(binding.chartHourlyBreakdown, arrayListHourly, requireContext());
-        hourlyChart.setDataForHourlyChart();
+            binding.tvNoDataDaily.setVisibility(View.VISIBLE);
+            binding.tvNoDataHourly.setVisibility(View.VISIBLE);
+            binding.tvNoDataSessionsLength.setVisibility(View.VISIBLE);
+        } else {
 
+            CopyOnWriteArrayList<Float> arrayListSessionLength = new CopyOnWriteArrayList<>(app.getUsageTimePerHour());
+            binding.barView.setDataList(arrayListSessionLength, 60, true);
+            setupSessionLengthChart(app.getMapSessionsLength());
+
+            CopyOnWriteArrayList<Float> arrayListHourly = new CopyOnWriteArrayList<>(app.getUsageTimePerHour());
+            HourlyChart hourlyChart = new HourlyChart(binding.chartHourlyBreakdown, arrayListHourly, requireContext());
+            hourlyChart.setDataForHourlyChart();
+        }
     }
 
     private void setupSessionLengthChart(HashMap<String, Integer> mapSessionsLength) {

@@ -135,4 +135,8 @@ public class UsageTimeRepository {
     public int getNotificationReceives() {
         return usageTime.getNotificationReceives();
     }
+
+    public HashMap<String, App> getMapAppInToDay() {
+        return usageTime.getMapAppInToDay();
+    }
 }
